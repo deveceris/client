@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
 import {NgForm} from '@angular/forms';
-import {Route, Router} from '@angular/router';
+import {Router} from '@angular/router';
 import {HttpClient} from './common/http.client';
 
 @Component({

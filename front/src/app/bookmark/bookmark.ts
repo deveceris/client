@@ -16,8 +16,9 @@ import {Router} from '@angular/router';
     `
 })
 export class Bookmark implements OnInit {
+    //TODO TEST데이터 삭제할 것
     items: any[] = [
-        {id: '1', title: '개미', isbn: '1234323'},
+        {id: '1', title: '개미', isbn: '8932903492'},
         {id: '2', title: '알고리즘', isbn: '42343'},
         {id: '3', title: '어떻게 살것 인가', isbn: '12342'}
     ];
@@ -27,7 +28,17 @@ export class Bookmark implements OnInit {
     }
 
     ngOnInit() {
-        // this.init();
+        this.get();
+    }
+
+    private get() {
+        this.http.get('/api/bookmarks/').toPromise().then(result => {
+            if (result.json().length > 0) {
+                this.items = result.json();
+            }
+        }).catch(err => {
+            console.log(err);
+        });
     }
 
     goTo(isbn: string) {
@@ -36,7 +47,11 @@ export class Bookmark implements OnInit {
     }
 
     itemRemove(id: string) {
-        console.log(id);
+        this.http.delete('/api/bookmark/' + id, null).toPromise().then(result => {
+            this.get();
+        }).catch(err => {
+            console.log(err);
+        });
     }
 
     // private getConfigFileNames() {

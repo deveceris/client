@@ -55,9 +55,9 @@ export class BookComponent implements OnInit {
         price: '가격',
         sale_price: '할인 가격',
         datetime: '출판일',
-        url: '미리보기',
-        thumbnail: '책 이미지'
-    }
+        url: 'https://www.google.co.kr',
+        thumbnail: 'https://www.google.co.kr/images/branding/googlelogo/2x/googlelogo_color_120x44dp.png'
+    };
 
     constructor(private http: HttpClient, private router: Router) {
     }
@@ -67,8 +67,12 @@ export class BookComponent implements OnInit {
     }
 
     private get() {
-        this.http.get('/api/book/' + this.isbn).toPromise().then(result => {
-            this.document = result.json().data;
+        this.http.get('/api/book' + this.router.url.split('/book')[1]).toPromise().then(result => {
+            if (result.json().documents.length > 0) {
+                this.document = result.json().documents[0];
+            }
+        }).catch(err => {
+            console.log(err);
         });
     }
 

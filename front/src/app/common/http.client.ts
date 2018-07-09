@@ -19,14 +19,13 @@ export class HttpClient extends Http {
 
     intercept(observable: Observable<Response>): Observable<Response> {
         return observable.catch((err, source) => {
-            if (err.status === 401 || err.status === 403) {
+            if (err.status === 401 || err.status === 403 || err.status === 302 || err.status === 404) {
                 this.router.navigate(['/login']);
             } else if (err.status === 502) {
                 this.router.navigate(['/login']);
             }
             return Observable.throw(err);
         });
-
     }
 
     private addAuthorizationHeader(options?: RequestOptionsArgs): RequestOptionsArgs {
@@ -42,8 +41,9 @@ export class HttpClient extends Http {
 
     getAuthorizationToken(auth: string) {
         if (process.env.ENV === 'production') {
+            console.log('auth : ' + auth);
             this.post('/api/login', auth).toPromise().then(res => {
-                // sessionStorage.setItem('AuthorizationToken', res.headers.get('Authorization'));
+                sessionStorage.setItem('AuthorizationToken', res.headers.get('Authorization'));
                 console.log(res);
                 this.router.navigate(['/search']);
             }).catch(err => {

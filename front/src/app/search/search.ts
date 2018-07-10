@@ -1,4 +1,6 @@
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
+import {HttpClient} from '../common/http.client';
+import {Router} from '@angular/router';
 
 @Component({
     selector: 'projectk-search',
@@ -13,16 +15,21 @@ import {Component} from '@angular/core';
                     <div ngbDropdown class="d-inline-block">
                         <button class="btn btn-outline-primary" id="dropdownBasic1" ngbDropdownToggle>{{name}}</button>
                         <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
-                            <button (click)="onClick($event)" class="dropdown-item" value="all">전체</button>
-                            <button (click)="onClick($event)" class="dropdown-item" value="title">책제목</button>
-                            <button (click)="onClick($event)" class="dropdown-item" value="publisher">출판사</button>
-                            <button (click)="onClick($event)" class="dropdown-item" value="isbn">ISBN</button>
+                            <button (click)="selectTarget($event)" class="dropdown-item" value="all">전체</button>
+                            <button (click)="selectTarget($event)" class="dropdown-item" value="title">책제목</button>
+                            <button (click)="selectTarget($event)" class="dropdown-item" value="publisher">출판사</button>
+                            <button (click)="selectTarget($event)" class="dropdown-item" value="isbn">ISBN</button>
                         </div>
                     </div>
                     <ng-template #popContent>
-                        Hello, <b>{{name}}</b>!<br>
-                        Hello, <b>{{name}}</b>!<br>
-                        Hello, <b>{{name}}</b>!<br>
+                        <div *ngFor="let item of histories">
+                            <button class="btn btn-link p-0" type="button" style="cursor: pointer"
+                                    (click)="selectHistory(item.keyword)">
+                                {{ item.keyword }}
+                            </button>
+                            <br>
+                        </div>
+
                     </ng-template>
 
                     <input type="text" class="form-control" [(ngModel)]="query" placeholder="검색어를 입력하세요."
@@ -30,7 +37,7 @@ import {Component} from '@angular/core';
                            (click)="$event.stopPropagation()"/>
                     <!--<input type="username" class="form-control" id="usernameField" [(ngModel)]="signup.username" required-->
                     <!--placeholder="username" name="username" #username="ngModel"/>-->
-                    <button class="btn btn-outline-primary" (click)="search()">검색</button>
+                    <button class="btn btn-outline-primary" (click)="clickSearch()">검색</button>
 
                 </div>
 
@@ -38,28 +45,27 @@ import {Component} from '@angular/core';
             <div class="col-lg-12" style="margin: 20px">
                 <ul class="list-group">
                     <li *ngFor="let book of data.documents"
-                        class="list-group-item d-flex justify-content-between align-items-center" (click)="onSelect(book.isbn)">
+                        class="list-group-item d-flex justify-content-between align-items-center" (click)="selectBook(book.isbn)">
                         {{ book.title }} / {{book.authors[0]}} / {{book.publisher}}
                     </li>
                 </ul>
             </div>
-
-            <ngb-pagination class="d-flex justify-content-center" [collectionSize]="70" [(page)]="page"></ngb-pagination>
-
-
+            <ngb-pagination class="d-flex justify-content-center" [maxSize]="5" [collectionSize]="total"
+                            [(page)]="page" (pageChange)="pageChange($event)"></ngb-pagination>
         </div>
     `,
 })
-export class Search {
+export class Search implements OnInit {
+    page = 1;   // 페이지 (페이지 번호는 total / size로 결정된다)
+    size = 10; // 페이지당 보여줄 결과
+    total = 10; // 검색어에 검색된 문서수
     query = '';
     name = '전체';
-    category = 'all';
-    histories: any[] = [
-        {id: '1', keyword: '개미'},
-        {id: '2', keyword: '알고리즘'},
-        {id: '3', keyword: '어떻게 살것 인가'}
-    ];
-    data: any = {
+    target = 'all';
+    data: any = {};
+    histories: any = {};
+    // TODO 데이터 삭제할 것
+    testdata: any = {
         'documents': [
             {
                 'authors': [
@@ -278,26 +284,79 @@ export class Search {
         '_end': false
     };
 
-    // onClick($event:NgbTabChangeEvent) {
-    onClick(event: any) {
+    constructor(private http: HttpClient, private router: Router) {
+
+    }
+
+    ngOnInit(): void {
+        this.getHistory();
+    }
+
+    getHistory() {
+        return this.http.get('/api/v1/book/recent').toPromise().then(result => {
+            console.log(result.json().data);
+            if (result.json().data.length > -1) {
+                this.histories = result.json().data;
+            }
+        }).catch(err => {
+            console.log(err);
+        });
+    }
+
+    selectHistory(keyword: string) {
+        this.query = keyword;
+        this.doSearch().then(result1 => {
+            console.log('success to search');
+            this.getHistory().then(result2 => {
+                console.log('success to reload histories');
+            });
+        });
+    }
+
+    selectTarget(event: any) {
         this.name = event.target.textContent;
-        this.category = event.target.value;
-        // this.http.delete('/api/bookmark/' + id, null).toPromise().then(result => {
-        //     this.get();
-        // }).catch(err => {
-        //     console.log(err);
-        // });
+        this.target = event.target.value;
     }
 
-    onSelect(isbn: string) {
-        alert(isbn);
+    selectBook(isbn: string) {
+        let isbnNumber = isbn.split(' ')[0];
+        alert(isbnNumber);
+        this.router.navigate(['/book/' + isbnNumber]);
     }
 
-    search() {
-        console.log(this.category);
-        console.log(this.query);
+    pageChange(p: number) {
+        this.page = p;
+        this.doSearch();
+    }
+
+    clickSearch() {
+        this.doSearch().then(result1 => {
+            console.log('success to search');
+            this.getHistory().then(result2 => {
+                console.log('success to reload histories');
+            });
+        });
+    }
+
+    doSearch() {
+        // /api/book/search
+        // query, page, size, target
+
         // "pageable_count": 1000,  //total_count 중에 노출가능 문서수
         // "total_count": 1000,     //검색어에 검색된 문서수
         // "_end": false            //현재 페이지가 마지막 페이지인지 여부. 값이 false이면 page를 증가시켜 다음 페이지를 요청할 수 있음.
+        console.log('search params...');
+        console.log('query : ' + this.query + ', page : ' + this.page + ', size : ' + this.size + ', target : ' + this.target);
+        let url = '/api/v1/book/search' + '?query=' + this.query + '&page=' + this.page + '&size=' + this.size + '&target=' + this.target;
+        return this.http.get(url).toPromise().then(result => {
+            let searched = result.json().data;
+            console.log('success to search book, length : ' + searched.documents.length);
+            if (searched.documents.length > -1) {
+                this.data = searched;
+                this.total = searched.total_count;
+            }
+        }).catch(err => {
+            console.log(err);
+        });
     }
 }

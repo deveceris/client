@@ -5,22 +5,29 @@ import {Router} from '@angular/router';
 @Component({
     selector: 'bookmark',
     template: `
-        <h1>북마크 리스트</h1>
-        <ul>
-            <li *ngFor="let item of items">
-                <a (click)="goTo(item.isbn)">{{ item.title }}</a>
-                <button class="btn" (click)="itemRemove(item.id)">삭제</button>
-            </li>
-        </ul>
-
+        <div style="width: 800px;">
+            <div class="row">
+                <h5 style="margin-left: 20px;">북마크</h5>
+            </div>
+            <hr/>
+            <div class="col-lg-12" style="margin: 20px">
+                <ul class="list-group">
+                    <li *ngFor="let item of items"
+                        class="list-group-item d-flex justify-content-between align-items-center">
+                        <a (click)="goTo(item.isbn)">{{ item.title }} / {{item.isbn}}</a>
+                        <button class="btn btn-outline-danger" (click)="itemRemove(item.id)">삭제</button>
+                    </li>
+                </ul>
+            </div>
+        </div>
     `
 })
 export class Bookmark implements OnInit {
-    //TODO TEST데이터 삭제할 것
+    // TODO 데이터 삭제할 것
     items: any[] = [
-        {id: '1', title: '개미', isbn: '8932903492'},
-        {id: '2', title: '알고리즘', isbn: '42343'},
-        {id: '3', title: '어떻게 살것 인가', isbn: '12342'}
+        // {id: '1', title: '개미', isbn: '8932903492'},
+        // {id: '2', title: '알고리즘', isbn: '42343'},
+        // {id: '3', title: '어떻게 살것 인가', isbn: '12342'}
     ];
 
     constructor(private http: HttpClient, private router: Router) {
@@ -32,9 +39,9 @@ export class Bookmark implements OnInit {
     }
 
     private get() {
-        this.http.get('/api/bookmarks/').toPromise().then(result => {
-            if (result.json().length > 0) {
-                this.items = result.json();
+        this.http.get('/api/v1/bookmarks/').toPromise().then(result => {
+            if (result.json().data.length > -1) {
+                this.items = result.json().data;
             }
         }).catch(err => {
             console.log(err);
@@ -47,7 +54,7 @@ export class Bookmark implements OnInit {
     }
 
     itemRemove(id: string) {
-        this.http.delete('/api/bookmark/' + id, null).toPromise().then(result => {
+        this.http.delete('/api/v1/bookmark/' + id, null).toPromise().then(result => {
             this.get();
         }).catch(err => {
             console.log(err);

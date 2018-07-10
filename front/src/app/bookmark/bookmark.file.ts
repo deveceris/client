@@ -22,7 +22,7 @@ export class BookmarkFile implements OnInit {
 
     private getConfigFile() {
         if (!this.configFile) {
-            this.http.get('/api/config/' + this.configFileName).toPromise().then(result => {
+            this.http.get('/api/v1/config/' + this.configFileName).toPromise().then(result => {
                 this.configFile = result.json().data;
             });
         }

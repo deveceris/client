@@ -64,7 +64,7 @@ export class SignupComponent {
 
     onSubmit() {
         console.log('Username: ' + this.signup.username + ', Password: ' + this.signup.password);
-        this.http.post(`/api/user`, this.signup).toPromise().then(resp => {
+        this.http.post(`/api/v1/user`, this.signup).toPromise().then(resp => {
             console.log('response');
             alert('가입완료');
             this.onClickCancel();

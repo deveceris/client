@@ -83,8 +83,21 @@ export class BookComponent implements OnInit {
         });
     }
 
+    private getBook() {
+        let params = this.router.url.split('/book')[1];
+        console.log('test : ' + params);
+        return this.http.get('/api/v1/book/inquiry' + params).toPromise().then(result => {
+            if (result.json().data) {
+                this.document = result.json().data;
+            }
+        }).catch(err => {
+            console.log(err);
+        });
+    }
+
     private getBookmark() {
-        return this.http.get('/api/v1/bookmark/isbn' + this.router.url.split('/book')[1]).toPromise().then(result => {
+        let params = this.router.url.split('/book')[1];
+        return this.http.get('/api/v1/bookmark' + params).toPromise().then(result => {
             let bookmark = result.json().data;
             console.log(bookmark);
             if (bookmark) {
@@ -97,18 +110,9 @@ export class BookComponent implements OnInit {
         });
     }
 
-    private getBook() {
-        return this.http.get('/api/v1/book' + this.router.url.split('/book')[1]).toPromise().then(result => {
-            if (result.json().data.documents.length > -1) {
-                this.document = result.json().data.documents[0];
-            }
-        }).catch(err => {
-            console.log(err);
-        });
-    }
-
     saveBookmark() {
-        this.http.post('/api/v1/bookmark/' + this.document.isbn + '/title/' + this.document.title, null).toPromise().then(result => {
+        let params = this.router.url.split('/book')[1];
+        this.http.post('/api/v1/bookmark' + params, null).toPromise().then(result => {
             alert('북마크!');
         }).catch(err => {
             console.log(err);

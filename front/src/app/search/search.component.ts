@@ -50,7 +50,7 @@ import {Router} from '@angular/router';
             <div class="col-lg-12" style="margin: 20px">
                 <ul class="list-group">
                     <li *ngFor="let book of data.documents"
-                        class="list-group-item d-flex justify-content-between align-items-center" (click)="selectBook(book.isbn)">
+                        class="list-group-item d-flex justify-content-between align-items-center" (click)="inquiryBook(book)">
                         <b>{{book.barcode}}</b>{{ book.title }} / {{book.authors[0]}} / {{book.publisher}} /({{book.isbn}})
                     </li>
                 </ul>
@@ -62,8 +62,8 @@ import {Router} from '@angular/router';
 })
 export class SearchComponent implements OnInit {
 
-    page = 1;   // 페이지 (페이지 번호는 total / size로 결정된다)
-    size = 10; // 페이지당 보여줄 결과
+    page = 1;   // 페이지(max: 50)
+    size = 10; // 페이지당 보여줄 원소 수(max: 50)
     total = 10; // 검색어에 검색된 문서수
     query = '';
     sortName = '정확도순';
@@ -339,10 +339,21 @@ export class SearchComponent implements OnInit {
         this.sort = event.target.value;
     }
 
-    selectBook(isbn: string) {
-        let isbnNumber = isbn.split(' ')[0];
-        alert(isbnNumber);
-        this.router.navigate(['/book/' + isbnNumber]);
+    inquiryBook(book: any) {
+        let params = {
+            queryParams: {
+                query: this.query,
+                page: this.page,
+                size: this.size,
+                target: this.target,
+                sort: this.sort,
+                isbn: book.isbn,
+                barcode: book.barcode,
+                publisher: book.publisher,
+                title: book.title,
+            }
+        };
+        this.router.navigate(['/book'], params);
     }
 
     pageChange(p: number) {

@@ -18,7 +18,7 @@ export const Route = RouterModule.forRoot([
         component: SignupComponent,
     },
     {
-        path: 'book/:isbn',
+        path: 'book',
         component: BookComponent
     },
     {

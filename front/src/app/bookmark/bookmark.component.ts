@@ -14,7 +14,7 @@ import {Router} from '@angular/router';
                 <ul class="list-group">
                     <li *ngFor="let item of items"
                         class="list-group-item d-flex justify-content-between align-items-center">
-                        <a (click)="goTo(item.isbn)">{{ item.title }} / {{item.isbn}}</a>
+                        <a (click)="goTo(item)">{{ item.title }} / {{item.isbn}}</a>
                         <button class="btn btn-outline-danger" (click)="itemRemove(item.id)">삭제</button>
                     </li>
                 </ul>
@@ -48,9 +48,22 @@ export class BookmarkComponent implements OnInit {
         });
     }
 
-    goTo(isbn: string) {
-        console.log(isbn);
-        this.router.navigate(['/book', isbn]);
+    goTo(book: any) {
+        console.log(book);
+        let params = {
+            queryParams: {
+                query: book.query,
+                page: book.page,
+                size: book.size,
+                target: book.target,
+                sort: book.sort,
+                isbn: book.isbn,
+                barcode: book.barcode,
+                publisher: book.publisher,
+                title: book.title,
+            }
+        };
+        this.router.navigate(['/book'], params);
     }
 
     itemRemove(id: string) {

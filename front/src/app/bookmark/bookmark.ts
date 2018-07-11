@@ -60,18 +60,4 @@ export class Bookmark implements OnInit {
             console.log(err);
         });
     }
-
-    // private getConfigFileNames() {
-    //     this.http.get('/api/config/configs').toPromise().then(result => {
-    //         this.configFileNames = result.json().data;
-    //     });
-    // }
-    //
-    // private reload() {
-    //     this.http.put('/api/config/reload', null).toPromise().then(result => {
-    //         this.alertMessage = result.json().data.message;
-    //         setTimeout(() => this.alertMessage = null, 3000);
-    //     });
-    // }
-
 }

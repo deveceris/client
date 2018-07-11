@@ -13,12 +13,20 @@ import {Router} from '@angular/router';
             <div class="row">
                 <div class="col" style="display: flex;">
                     <div ngbDropdown class="d-inline-block">
-                        <button class="btn btn-outline-primary" id="dropdownBasic1" ngbDropdownToggle>{{name}}</button>
+                        <button class="btn btn-outline-primary" id="dropdownBasic1" ngbDropdownToggle tabindex="1">{{targetName}}</button>
                         <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
                             <button (click)="selectTarget($event)" class="dropdown-item" value="all">전체</button>
                             <button (click)="selectTarget($event)" class="dropdown-item" value="title">책제목</button>
                             <button (click)="selectTarget($event)" class="dropdown-item" value="publisher">출판사</button>
                             <button (click)="selectTarget($event)" class="dropdown-item" value="isbn">ISBN</button>
+                        </div>
+                    </div>
+                    <div ngbDropdown class="d-inline-block">
+                        <button class="btn btn-outline-primary" id="dropdownBasic2" ngbDropdownToggle tabindex="1">{{sortName}}</button>
+                        <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+                            <button (click)="selectSort($event)" class="dropdown-item" value="accuracy">정확도순</button>
+                            <button (click)="selectSort($event)" class="dropdown-item" value="recency">최신순</button>
+                            <button (click)="selectSort($event)" class="dropdown-item" value="sales">판매량순</button>
                         </div>
                     </div>
                     <ng-template #popContent>
@@ -31,22 +39,19 @@ import {Router} from '@angular/router';
                         </div>
 
                     </ng-template>
-
                     <input type="text" class="form-control" [(ngModel)]="query" placeholder="검색어를 입력하세요."
                            [ngbPopover]="popContent" placement="bottom" popoverTitle="최근 검색어" #p="ngbPopover" (document:click)="p.close()"
-                           (click)="$event.stopPropagation()"/>
+                           (click)="$event.stopPropagation()" tabindex="2" (keydown)="onKeydown($event)"/>
                     <!--<input type="username" class="form-control" id="usernameField" [(ngModel)]="signup.username" required-->
                     <!--placeholder="username" name="username" #username="ngModel"/>-->
-                    <button class="btn btn-outline-primary" (click)="clickSearch()">검색</button>
-
+                    <button class="btn btn-outline-primary" (click)="clickSearch()" tabindex="3">검색</button>
                 </div>
-
             </div>
             <div class="col-lg-12" style="margin: 20px">
                 <ul class="list-group">
                     <li *ngFor="let book of data.documents"
                         class="list-group-item d-flex justify-content-between align-items-center" (click)="selectBook(book.isbn)">
-                        {{ book.title }} / {{book.authors[0]}} / {{book.publisher}}
+                        {{ book.title }} / {{book.authors[0]}} / {{book.publisher}} /({{book.isbn}})
                     </li>
                 </ul>
             </div>
@@ -56,11 +61,14 @@ import {Router} from '@angular/router';
     `,
 })
 export class Search implements OnInit {
+
     page = 1;   // 페이지 (페이지 번호는 total / size로 결정된다)
     size = 10; // 페이지당 보여줄 결과
     total = 10; // 검색어에 검색된 문서수
     query = '';
-    name = '전체';
+    sortName = '정확도순';
+    sort = 'accuracy';
+    targetName = '전체';
     target = 'all';
     data: any = {};
     histories: any = {};
@@ -293,13 +301,21 @@ export class Search implements OnInit {
     }
 
     getHistory() {
-        return this.http.get('/api/v1/book/recent').toPromise().then(result => {
+        return this.http.get('/api/v1/histories').toPromise().then(result => {
             console.log(result.json().data);
             if (result.json().data.length > -1) {
                 this.histories = result.json().data;
             }
         }).catch(err => {
             console.log(err);
+        });
+    }
+
+    postHistory() {
+        return this.http.post('/api/v1/history?keyword=' + this.query, null).toPromise().then(result => {
+            console.log('success to post history');
+        }).catch(err => {
+            console.log('failed to post history : ' + err);
         });
     }
 
@@ -314,8 +330,13 @@ export class Search implements OnInit {
     }
 
     selectTarget(event: any) {
-        this.name = event.target.textContent;
+        this.targetName = event.target.textContent;
         this.target = event.target.value;
+    }
+
+    selectSort(event: any) {
+        this.sortName = event.target.textContent;
+        this.sort = event.target.value;
     }
 
     selectBook(isbn: string) {
@@ -330,12 +351,20 @@ export class Search implements OnInit {
     }
 
     clickSearch() {
-        this.doSearch().then(result1 => {
-            console.log('success to search');
-            this.getHistory().then(result2 => {
-                console.log('success to reload histories');
+        this.postHistory().then(result0 => {
+            this.doSearch().then(result1 => {
+                this.getHistory().then(result2 => {
+                    console.log('success to reload histories');
+                });
             });
         });
+
+    }
+
+    onKeydown(event: any) {
+        if (event.keyCode === 13) {
+            this.clickSearch();
+        }
     }
 
     doSearch() {
@@ -346,14 +375,14 @@ export class Search implements OnInit {
         // "total_count": 1000,     //검색어에 검색된 문서수
         // "_end": false            //현재 페이지가 마지막 페이지인지 여부. 값이 false이면 page를 증가시켜 다음 페이지를 요청할 수 있음.
         console.log('search params...');
-        console.log('query : ' + this.query + ', page : ' + this.page + ', size : ' + this.size + ', target : ' + this.target);
-        let url = '/api/v1/book/search' + '?query=' + this.query + '&page=' + this.page + '&size=' + this.size + '&target=' + this.target;
+        console.log('query : ' + this.query + ', page : ' + this.page + ', size : ' + this.size + ', target : ' + this.target + ', sort : ' + this.sort);
+        let url = '/api/v1/book/search' + '?query=' + this.query + '&page=' + this.page + '&size=' + this.size + '&target=' + this.target + '&sort=' + this.sort;
         return this.http.get(url).toPromise().then(result => {
             let searched = result.json().data;
             console.log('success to search book, length : ' + searched.documents.length);
             if (searched.documents.length > -1) {
                 this.data = searched;
-                this.total = searched.total_count;
+                this.total = searched.total_count > 500 ? 500 : searched.total_count;
             }
         }).catch(err => {
             console.log(err);

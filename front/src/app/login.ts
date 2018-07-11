@@ -24,11 +24,11 @@ import {HttpClient} from './common/http.client';
             <div class="col-md-4"></div>
             <div class="col-md-6">
                 <form #f="ngForm" (ngSubmit)="onSubmit(f)" novalidate action="/api/login" method="post">
-                    <input name="username" type="text" class="form-control" ngModel required placeholder="아이디"/>
-                    <input name="password" type="password" class="form-control" ngModel required placeholder="비밀번호"/>
+                    <input name="username" type="text" class="form-control" ngModel required placeholder="아이디" tabindex="1"/>
+                    <input name="password" type="password" class="form-control" ngModel required placeholder="비밀번호" tabindex="2"/>
                     <br>
-                    <button class="btn btn-secondary" (click)="onClickMe()">회원가입</button>
-                    <button type="submit" class="btn btn-primary">로그인</button>
+                    <button type="submit" class="btn btn-primary" tabindex="3">로그인</button>
+                    <button class="btn btn-secondary" (click)="onClickMe()" tabindex="5">회원가입</button>
                 </form>
             </div>
         </div>
@@ -42,6 +42,7 @@ export class Login {
     onSubmit(f: NgForm) {
         this.http.getAuthorizationToken(JSON.stringify(f.value));
     }
+
     onClickMe() {
         this.router.navigate(['/signup']);
     }

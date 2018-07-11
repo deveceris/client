@@ -14,9 +14,11 @@ import {Router} from '@angular/router';
                 <div class="form-group">
                     <label for="usernameField"><strong>Username</strong></label>
                     <input type="username" class="form-control" id="usernameField" [(ngModel)]="signup.username" required
-                           placeholder="username" name="username" #username="ngModel"/>
+                           placeholder="username" name="username" #username="ngModel"
+                           (blur)="confirmUsername(username.valid, username.pristine, signup.username)"/>
                 </div>
                 <div [hidden]="username.valid || username.pristine" class="alert alert-danger">Username은 필수요소입니다.</div>
+                <div [hidden]="!usernameDuplicated" class="alert alert-danger">이미 존재하는 Username입니다.</div>
 
                 <div class="form-group">
                     <label for="password"><strong>Password</strong></label>
@@ -30,7 +32,9 @@ import {Router} from '@angular/router';
                            (blur)="confirmPassword()" name="passwordConfirmationTxt"/>
                 </div>
                 <div [hidden]="!passwordConfirmationFailed" class="alert alert-danger">Password가 맞지않습니다.</div>
-                <button type="submit" class="btn btn-success" [disabled]="!signupForm.form.valid">가입</button>
+                <button type="submit" class="btn btn-success"
+                        [disabled]="!signupForm.form.valid || passwordConfirmationFailed || usernameDuplicated">가입
+                </button>
                 <button class="btn btn-cancel" (click)="onClickCancel()">취소</button>
             </form>
         </div>
@@ -38,8 +42,8 @@ import {Router} from '@angular/router';
     styleUrls: ['./signup.component.css']
 })
 export class SignupComponent {
-    title = '';
     passwordConfirmationFailed = false;
+    usernameDuplicated = false;
     passwordConfirmationTxt = '';
 
     public signup = {
@@ -58,6 +62,21 @@ export class SignupComponent {
         }
     }
 
+    confirmUsername(valid: boolean, pristine: boolean, username: string) {
+        if (valid && !pristine) {
+            this.http.get(`/api/v1/user/username/` + username).toPromise().then(resp => {
+                if (resp.json().data) {
+                    this.usernameDuplicated = true;
+                } else {
+                    this.usernameDuplicated = false;
+                }
+            }).catch(err => {
+                console.log('failed to duplicate check : ' + err);
+                this.usernameDuplicated = false;
+            });
+        }
+    }
+
     onClickCancel() {
         this.router.navigate(['/login']);
     }
@@ -70,11 +89,25 @@ export class SignupComponent {
             this.onClickCancel();
         }).catch(err => {
             console.error(err);
+            alert('정상적인 요청이 아닙니다. {' + err + '}');
         });
 
         // this.http.put('/carrier/api/config/reload', null).toPromise().then(result => {
         //     this.alertMessage = result.json().data.message;
         //     setTimeout(() => this.alertMessage = null, 3000);
         // });
+    }
+
+    isAlreadyOccupied(username: string) {
+        this.http.get(`/api/v1/user/username/` + username).toPromise().then(resp => {
+            if (resp.json().data) {
+                return true;
+            } else {
+                return false;
+            }
+        }).catch(err => {
+            console.log('failed to duplicate check : ' + err);
+            return true;
+        });
     }
 }

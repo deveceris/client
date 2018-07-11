@@ -8,7 +8,7 @@ import {Router} from '@angular/router';
         'td { height: 40px; }'],
     template: `
         <div style="width: 800px; margin-top: 20px">
-            <h2><strong>{{document.title}}</strong></h2>
+            <h2><strong>{{document?.title}}</strong></h2>
             <hr/>
         </div>
         <div style="width: 800px;">
@@ -20,33 +20,33 @@ import {Router} from '@angular/router';
                     <td style="width: 60%;"></td>
                 </tr>
                 <tr>
-                    <td rowspan="5" style="text-align: center"><img style="width: 100px;" src="{{document.thumbnail}}"/></td>
+                    <td rowspan="5" style="text-align: center"><img style="width: 100px;" src="{{document?.thumbnail}}"/></td>
                     <td>저자</td>
-                    <td>{{document.authors}}</td>
+                    <td>{{document?.authors}}</td>
                 </tr>
                 <tr>
                     <td>출판사</td>
-                    <td>{{document.publisher}} / {{document.datetime}}</td>
+                    <td>{{document?.publisher}} / {{document?.datetime}}</td>
                 </tr>
                 <tr>
                     <td>가격</td>
-                    <td><s>{{document.price}}</s></td>
+                    <td><s>{{document?.price}}</s></td>
                 </tr>
                 <tr>
                     <td>할인 가격</td>
-                    <td><h4>{{document.sale_price}}</h4></td>
+                    <td><h4>{{document?.sale_price}}</h4></td>
                 </tr>
                 <tr>
                     <td>카테고리</td>
-                    <td>{{document.category}}</td>
+                    <td>{{document?.category}}</td>
                 </tr>
                 <tr style="height: 100px;">
-                    <td colspan="3">{{document.contents}}</td>
+                    <td colspan="3">{{document?.contents}}</td>
                 </tr>
                 <tr style="height: 100px;">
                     <td colspan="3" style="text-align:center;">
                         <button class="btn btn-outline-success" (click)="saveBookmark()" [disabled]="bookmarkDisabled">북마크</button>
-                        <button class="btn btn-outline-primary"><a href="{{document.url}}">미리보기</a></button>
+                        <button class="btn btn-outline-primary"><a href="{{document?.url}}">미리보기</a></button>
                 </tr>
             </table>
         </div>
@@ -86,6 +86,7 @@ export class BookComponent implements OnInit {
     private getBookmark() {
         return this.http.get('/api/v1/bookmark/isbn' + this.router.url.split('/book')[1]).toPromise().then(result => {
             let bookmark = result.json().data;
+            console.log(bookmark);
             if (bookmark) {
                 this.bookmarkDisabled = true;
             } else {

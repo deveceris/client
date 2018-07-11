@@ -39,6 +39,10 @@ export class HttpClient extends Http {
         return authOptions;
     }
 
+    removeAuthorizationToken() {
+        sessionStorage.removeItem('AuthorizationToken');
+    }
+
     getAuthorizationToken(auth: string) {
         if (process.env.ENV === 'production') {
             console.log('auth : ' + auth);

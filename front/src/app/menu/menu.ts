@@ -1,6 +1,6 @@
 import {AfterViewInit, Component, Input, ViewChild} from '@angular/core';
 import {NgbTabChangeEvent, NgbTabset} from '@ng-bootstrap/ng-bootstrap';
-
+import {HttpClient} from '../common/http.client';
 import {Router} from '@angular/router';
 
 @Component({
@@ -16,7 +16,22 @@ import {Router} from '@angular/router';
                 <ng-template ngbTabTitle><span routerLink="/bookmark"><b>북마크</b></span></ng-template>
                 <ng-template ngbTabContent></ng-template>
             </ngb-tab>
+            <ngb-tab id="/swagger-ui.html">
+                <ng-template ngbTabTitle><span routerLink="/logout"><b>swagger</b></span></ng-template>
+                <ng-template ngbTabContent></ng-template>
+            </ngb-tab>
+            <ngb-tab id="/h2">
+                <ng-template ngbTabTitle><span routerLink="/h2"><b>h2 db</b></span></ng-template>
+                <ng-template ngbTabContent></ng-template>
+            </ngb-tab>
+
         </ngb-tabset>
+        <div>
+            <button class="btn btn-secondary" (click)="logout()">로그아웃</button>
+            <a href="/h2">h2 db</a>
+            <a href="/swagger-ui.html">swagger</a>
+        </div>
+
     `,
 })
 
@@ -26,7 +41,7 @@ export class Menu implements AfterViewInit {
     @ViewChild('ngbTabset') tab: NgbTabset;
 
 
-    constructor(private router: Router) {
+    constructor(private router: Router, private http: HttpClient) {
     }
 
     ngAfterViewInit() {
@@ -35,5 +50,14 @@ export class Menu implements AfterViewInit {
 
     menuTabChange($event: NgbTabChangeEvent) {
         this.router.navigate([$event.nextId]);
+    }
+
+    logout() {
+        this.http.removeAuthorizationToken();
+        this.router.navigate(['/login']);
+    }
+
+    route(url: string) {
+        this.router.navigate([url]);
     }
 }

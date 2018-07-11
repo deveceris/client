@@ -1,4 +1,6 @@
-/node_modules/
-/src/app/**/*.js
-/src/app/**/*.map
-/dist/
+front/node_modules/
+front/src/app/**/*.js
+front/src/app/**/*.map
+front/dist/
+.idea
+*.iml

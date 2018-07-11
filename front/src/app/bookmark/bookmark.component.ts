@@ -22,7 +22,7 @@ import {Router} from '@angular/router';
         </div>
     `
 })
-export class Bookmark implements OnInit {
+export class BookmarkComponent implements OnInit {
     // TODO 데이터 삭제할 것
     items: any[] = [
         // {id: '1', title: '개미', isbn: '8932903492'},

@@ -9,18 +9,17 @@ import {InMemoryWebApiModule} from 'angular-in-memory-web-api';
 import {InMemoryDataService} from './in-memory-data.service';
 import {Route} from './routes';
 
-import {Login} from './login';
-import {Home} from './home';
+import {LoginComponent} from './login.component';
+import {HomeComponent} from './home.component';
 import {ProjectK} from './projectk';
-import {Search} from './search/search';
-import {Bookmark} from './bookmark/bookmark';
-import {BookmarkFile} from './bookmark/bookmark.file';
+import {SearchComponent} from './search/search.component';
+import {BookmarkComponent} from './bookmark/bookmark.component';
 
 import {Popup} from './common/popup';
 
 import {HttpClient} from './common/http.client';
 import {ProjectkGuard} from './common/guard';
-import {Menu} from './menu/menu';
+import {MenuComponent} from './menu/menu.component';
 import {SignupComponent} from './signup/signup.component';
 import {BookComponent} from './book/book.component';
 
@@ -35,13 +34,12 @@ import {BookComponent} from './book/book.component';
         process.env.ENV !== 'production' ? InMemoryWebApiModule.forRoot(InMemoryDataService) : []
     ],
     declarations: [
-        Login,
-        Home,
+        LoginComponent,
+        HomeComponent,
         ProjectK,
-        Menu,
-        Search,
-        Bookmark,
-        BookmarkFile,
+        MenuComponent,
+        SearchComponent,
+        BookmarkComponent,
         SignupComponent,
         BookComponent,
         Popup

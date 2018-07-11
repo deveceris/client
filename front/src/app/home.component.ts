@@ -10,7 +10,7 @@ import {Router} from '@angular/router';
         <router-outlet></router-outlet>
     `,
 })
-export class Home implements OnInit {
+export class HomeComponent implements OnInit {
 
     menu: string;
 

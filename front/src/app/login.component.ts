@@ -34,7 +34,7 @@ import {HttpClient} from './common/http.client';
         </div>
     `,
 })
-export class Login {
+export class LoginComponent {
 
     constructor(private http: HttpClient, private router: Router) {
     }

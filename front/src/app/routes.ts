@@ -1,9 +1,9 @@
 import {RouterModule} from '@angular/router';
 
-import {Login} from './login';
-import {Home} from './home';
-import {Search} from './search/search';
-import {Bookmark} from './bookmark/bookmark';
+import {LoginComponent} from './login.component';
+import {HomeComponent} from './home.component';
+import {SearchComponent} from './search/search.component';
+import {BookmarkComponent} from './bookmark/bookmark.component';
 import {ProjectkGuard} from './common/guard';
 import {SignupComponent} from './signup/signup.component';
 import {BookComponent} from './book/book.component';
@@ -11,7 +11,7 @@ import {BookComponent} from './book/book.component';
 export const Route = RouterModule.forRoot([
     {
         path: 'login',
-        component: Login,
+        component: LoginComponent,
     },
     {
         path: 'signup',
@@ -23,7 +23,7 @@ export const Route = RouterModule.forRoot([
     },
     {
         path: '',
-        component: Home,
+        component: HomeComponent,
         canActivate: [ProjectkGuard],
         children: [
             {
@@ -33,11 +33,11 @@ export const Route = RouterModule.forRoot([
             },
             {
                 path: 'search',
-                component: Search
+                component: SearchComponent
             },
             {
                 path: 'bookmark',
-                component: Bookmark
+                component: BookmarkComponent
             }
         ]
     }

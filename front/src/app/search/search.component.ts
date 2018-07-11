@@ -60,7 +60,7 @@ import {Router} from '@angular/router';
         </div>
     `,
 })
-export class Search implements OnInit {
+export class SearchComponent implements OnInit {
 
     page = 1;   // 페이지 (페이지 번호는 total / size로 결정된다)
     size = 10; // 페이지당 보여줄 결과

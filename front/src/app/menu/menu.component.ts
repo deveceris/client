@@ -16,15 +16,6 @@ import {Router} from '@angular/router';
                 <ng-template ngbTabTitle><span routerLink="/bookmark"><b>북마크</b></span></ng-template>
                 <ng-template ngbTabContent></ng-template>
             </ngb-tab>
-            <ngb-tab id="/swagger-ui.html">
-                <ng-template ngbTabTitle><span routerLink="/logout"><b>swagger</b></span></ng-template>
-                <ng-template ngbTabContent></ng-template>
-            </ngb-tab>
-            <ngb-tab id="/h2">
-                <ng-template ngbTabTitle><span routerLink="/h2"><b>h2 db</b></span></ng-template>
-                <ng-template ngbTabContent></ng-template>
-            </ngb-tab>
-
         </ngb-tabset>
         <div>
             <button class="btn btn-secondary" (click)="logout()">로그아웃</button>
@@ -35,7 +26,7 @@ import {Router} from '@angular/router';
     `,
 })
 
-export class Menu implements AfterViewInit {
+export class MenuComponent implements AfterViewInit {
 
     @Input() menu: string;
     @ViewChild('ngbTabset') tab: NgbTabset;

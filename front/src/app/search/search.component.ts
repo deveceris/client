@@ -51,7 +51,7 @@ import {Router} from '@angular/router';
                 <ul class="list-group">
                     <li *ngFor="let book of data.documents"
                         class="list-group-item d-flex justify-content-between align-items-center" (click)="selectBook(book.isbn)">
-                        {{ book.title }} / {{book.authors[0]}} / {{book.publisher}} /({{book.isbn}})
+                        <b>{{book.barcode}}</b>{{ book.title }} / {{book.authors[0]}} / {{book.publisher}} /({{book.isbn}})
                     </li>
                 </ul>
             </div>

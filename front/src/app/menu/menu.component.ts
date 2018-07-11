@@ -7,22 +7,23 @@ import {Router} from '@angular/router';
     selector: 'projectk-menu',
 
     template: `
-        <ngb-tabset type="pills" (tabChange)="menuTabChange($event)" #ngbTabset="ngbTabset">
-            <ngb-tab id="/search">
-                <ng-template ngbTabTitle><span routerLink="/search"><b>검색</b></span></ng-template>
-                <ng-template ngbTabContent></ng-template>
-            </ngb-tab>
-            <ngb-tab id="/bookmark">
-                <ng-template ngbTabTitle><span routerLink="/bookmark"><b>북마크</b></span></ng-template>
-                <ng-template ngbTabContent></ng-template>
-            </ngb-tab>
-        </ngb-tabset>
         <div>
-            <button class="btn btn-secondary" (click)="logout()">로그아웃</button>
-            <a href="/h2">h2 db</a>
-            <a href="/swagger-ui.html">swagger</a>
+            <ngb-tabset type="pills" (tabChange)="menuTabChange($event)" #ngbTabset="ngbTabset">
+                <ngb-tab id="/search">
+                    <ng-template ngbTabTitle><span><b>검색</b></span></ng-template>
+                </ngb-tab>
+                <ngb-tab id="/bookmark">
+                    <ng-template ngbTabTitle><span routerLink="/bookmark"><b>북마크</b></span></ng-template>
+                </ngb-tab>
+            </ngb-tabset>
+            <div style="position: relative;">
+                <div style="right: 0; top: -40px;position: absolute;">
+                    <a href="/h2"><button class="btn btn-outline-primary">h2 db</button></a>
+                    <a href="/swagger-ui.html"><button class="btn btn-outline-primary">swagger</button></a>
+                    <button class="btn btn-outline-danger" (click)="logout()">로그아웃</button>
+                </div>
+            </div>
         </div>
-
     `,
 })
 

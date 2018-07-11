@@ -51,6 +51,7 @@ export class HttpClient extends Http {
                 console.log(res);
                 this.router.navigate(['/search']);
             }).catch(err => {
+                alert('로그인에 실패하였습니다. : ' + err);
                 console.log(err);
             });
         } else {

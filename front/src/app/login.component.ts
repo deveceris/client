@@ -1,7 +1,8 @@
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {NgForm} from '@angular/forms';
 import {Router} from '@angular/router';
 import {HttpClient} from './common/http.client';
+import {AES} from 'crypto-js';
 
 @Component({
     selector: 'projectk-login',
@@ -34,13 +35,24 @@ import {HttpClient} from './common/http.client';
         </div>
     `,
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit {
+    secret = '';
 
     constructor(private http: HttpClient, private router: Router) {
     }
 
+    ngOnInit(): void {
+        this.http.get('/api/config').toPromise().then(resp => {
+            if (resp.json().data) {
+                this.secret = resp.json().data;
+            }
+        });
+    }
+
     onSubmit(f: NgForm) {
-        this.http.getAuthorizationToken(JSON.stringify(f.value));
+        let authParam = f;
+        authParam.value.password = AES.encrypt(f.value.password, this.secret).toString();
+        this.http.getAuthorizationToken(JSON.stringify(authParam.value));
     }
 
     onClickMe() {

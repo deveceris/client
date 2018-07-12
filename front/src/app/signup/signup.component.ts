@@ -1,6 +1,7 @@
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {HttpClient} from '../common/http.client';
 import {Router} from '@angular/router';
+import {AES} from 'crypto-js';
 
 @Component({
     selector: 'projectk-signup',
@@ -41,17 +42,25 @@ import {Router} from '@angular/router';
     `,
     styleUrls: ['./signup.component.css']
 })
-export class SignupComponent {
+export class SignupComponent implements OnInit {
     passwordConfirmationFailed = false;
     usernameDuplicated = false;
     passwordConfirmationTxt = '';
-
+    secret = '';
     public signup = {
         username: '',
         password: ''
     };
 
     constructor(private http: HttpClient, private router: Router) {
+    }
+
+    ngOnInit(): void {
+        this.http.get('/api/config').toPromise().then(resp => {
+            if (resp.json().data) {
+                this.secret = resp.json().data;
+            }
+        });
     }
 
     confirmPassword() {
@@ -82,6 +91,8 @@ export class SignupComponent {
     }
 
     onSubmit() {
+        let encrypted = AES.encrypt(this.signup.password, this.secret).toString();
+        this.signup.password = encrypted;
         this.http.post(`/api/v1/user`, this.signup).toPromise().then(resp => {
             console.log('response');
             alert('가입완료');

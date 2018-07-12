@@ -53,8 +53,6 @@ import {Router} from '@angular/router';
     `
 })
 export class BookComponent implements OnInit {
-    // isbn = this.router.url.split('/book')[1];
-    isbn = '';
     bookmarkDisabled = false;
     // TODO 데이터 삭제할 것
     document = {
@@ -114,6 +112,7 @@ export class BookComponent implements OnInit {
         let params = this.router.url.split('/book')[1];
         this.http.post('/api/v1/bookmark' + params, null).toPromise().then(result => {
             alert('북마크!');
+            this.bookmarkDisabled = true;
         }).catch(err => {
             console.log(err);
         });

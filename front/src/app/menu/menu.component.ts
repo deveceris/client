@@ -48,8 +48,4 @@ export class MenuComponent implements AfterViewInit {
         this.http.removeAuthorizationToken();
         this.router.navigate(['/login']);
     }
-
-    route(url: string) {
-        this.router.navigate([url]);
-    }
 }

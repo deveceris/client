@@ -15,8 +15,6 @@ import {ProjectK} from './projectk';
 import {SearchComponent} from './search/search.component';
 import {BookmarkComponent} from './bookmark/bookmark.component';
 
-import {Popup} from './common/popup';
-
 import {HttpClient} from './common/http.client';
 import {ProjectkGuard} from './common/guard';
 import {MenuComponent} from './menu/menu.component';
@@ -41,21 +39,16 @@ import {BookComponent} from './book/book.component';
         SearchComponent,
         BookmarkComponent,
         SignupComponent,
-        BookComponent,
-        Popup
-    ],
-    entryComponents: [
-        Popup
+        BookComponent
     ],
     providers: [
         {provide: APP_BASE_HREF, useValue: '/'},
         NgbActiveModal,
         HttpClient,
-        NgbModal,
         {
             provide: HttpClient,
-            useFactory: (backend: XHRBackend, defaultOptions: RequestOptions, router: Router, modalService: NgbModal) => {
-                return new HttpClient(backend, defaultOptions, router, modalService);
+            useFactory: (backend: XHRBackend, defaultOptions: RequestOptions, router: Router) => {
+                return new HttpClient(backend, defaultOptions, router);
             },
             deps: [XHRBackend, RequestOptions, Router, NgbModal]
         },

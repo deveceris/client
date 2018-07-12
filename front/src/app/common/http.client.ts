@@ -4,12 +4,11 @@ import 'rxjs/add/operator/toPromise';
 import 'rxjs/add/operator/catch';
 import {Router} from '@angular/router';
 import {Observable} from 'rxjs/Observable';
-import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 
 @Injectable()
 export class HttpClient extends Http {
 
-    constructor(backend: ConnectionBackend, defaultOptions: RequestOptions, private router: Router, private modalService: NgbModal) {
+    constructor(backend: ConnectionBackend, defaultOptions: RequestOptions, private router: Router) {
         super(backend, defaultOptions);
     }
 

@@ -334,9 +334,7 @@ export class InMemoryDataService implements InMemoryDbService {
 
     // getRootPath(url: string): string {
     //     // 앞쪽에서부터 우선순위
-    //     // 변환 예시 : /carrier/api/config/Install => /carrier/api
     //     // collection인 "config" 하위 경로를 제외한
-    //     // 상위 경로("/carrier/api")가 root path가 된다.
     //     let collectionNames = ['daemons', 'daemon', 'configs', 'config', 'upgrade', 'service'];
     //     for (let i in collectionNames) {
     //         let collectionIndex = url.indexOf(collectionNames[i]);

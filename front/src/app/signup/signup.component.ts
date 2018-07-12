@@ -82,7 +82,6 @@ export class SignupComponent {
     }
 
     onSubmit() {
-        console.log('Username: ' + this.signup.username + ', Password: ' + this.signup.password);
         this.http.post(`/api/v1/user`, this.signup).toPromise().then(resp => {
             console.log('response');
             alert('가입완료');
@@ -90,24 +89,6 @@ export class SignupComponent {
         }).catch(err => {
             console.error(err);
             alert('정상적인 요청이 아닙니다. {' + err + '}');
-        });
-
-        // this.http.put('/carrier/api/config/reload', null).toPromise().then(result => {
-        //     this.alertMessage = result.json().data.message;
-        //     setTimeout(() => this.alertMessage = null, 3000);
-        // });
-    }
-
-    isAlreadyOccupied(username: string) {
-        this.http.get(`/api/v1/user/username/` + username).toPromise().then(resp => {
-            if (resp.json().data) {
-                return true;
-            } else {
-                return false;
-            }
-        }).catch(err => {
-            console.log('failed to duplicate check : ' + err);
-            return true;
         });
     }
 }

@@ -3,11 +3,16 @@ import {NgForm} from '@angular/forms';
 import {Router} from '@angular/router';
 import {HttpClient} from './common/http.client';
 import {AES} from 'crypto-js';
+import {Subject} from 'rxjs';
+import {debounceTime} from 'rxjs/operators';
 
 @Component({
     selector: 'projectk-login',
 
     template: `
+        <div style="left: 0; top: 0px;position: absolute;width: 100%; z-index: 10;text-align: center;">
+            <ngb-alert *ngIf="successMessage" type="success" (close)="successMessage = null">{{ successMessage }}</ngb-alert>
+        </div>
         <div class="row">
             <div class="col-md-2"></div>
             <div class="col-md-8" style="text-align: center;">
@@ -37,11 +42,18 @@ import {AES} from 'crypto-js';
 })
 export class LoginComponent implements OnInit {
     secret = '';
+    _success = new Subject<string>();
+    successMessage: string;
 
     constructor(private http: HttpClient, private router: Router) {
     }
 
     ngOnInit(): void {
+        this._success.subscribe((message) => this.successMessage = message);
+        this._success.pipe(
+            debounceTime(1000)
+        ).subscribe(() => this.successMessage = null);
+
         this.http.get('/api/config').toPromise().then(resp => {
             if (resp.json().data) {
                 this.secret = resp.json().data;
@@ -52,7 +64,7 @@ export class LoginComponent implements OnInit {
     onSubmit(f: NgForm) {
         let authParam = f;
         authParam.value.password = AES.encrypt(f.value.password, this.secret).toString();
-        this.http.getAuthorizationToken(JSON.stringify(authParam.value));
+        this.http.getAuthorizationToken(JSON.stringify(authParam.value), this._success);
     }
 
     onClickMe() {

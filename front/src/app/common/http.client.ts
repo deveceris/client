@@ -42,7 +42,7 @@ export class HttpClient extends Http {
         sessionStorage.removeItem('AuthorizationToken');
     }
 
-    getAuthorizationToken(auth: string) {
+    getAuthorizationToken(auth: string, _success: any) {
         if (process.env.ENV === 'production') {
             console.log('auth : ' + auth);
             this.post('/api/login', auth).toPromise().then(res => {
@@ -50,8 +50,8 @@ export class HttpClient extends Http {
                 console.log(res);
                 this.router.navigate(['/search']);
             }).catch(err => {
-                alert('로그인에 실패하였습니다. : ' + err);
                 console.log(err);
+                _success.next('로그인 실패 :' + err.status);
             });
         } else {
             let authorizationToken = 'authorizationToken';

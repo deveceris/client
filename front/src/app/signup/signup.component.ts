@@ -2,10 +2,15 @@ import {Component, OnInit} from '@angular/core';
 import {HttpClient} from '../common/http.client';
 import {Router} from '@angular/router';
 import {AES} from 'crypto-js';
+import {Subject} from 'rxjs';
+import {debounceTime} from 'rxjs/operators';
 
 @Component({
     selector: 'projectk-signup',
     template: `
+        <div style="left: 0; top: 0px;position: absolute;width: 100%; z-index: 10;text-align: center;">
+            <ngb-alert *ngIf="successMessage" type="success" (close)="successMessage = null">{{ successMessage }}</ngb-alert>
+        </div>
         <div style="margin-top: 20px">
             <h2><strong>회원가입</strong></h2>
             <hr/>
@@ -43,6 +48,9 @@ import {AES} from 'crypto-js';
     styleUrls: ['./signup.component.css']
 })
 export class SignupComponent implements OnInit {
+    _success = new Subject<string>();
+    successMessage: string;
+
     passwordConfirmationFailed = false;
     usernameDuplicated = false;
     passwordConfirmationTxt = '';
@@ -56,6 +64,11 @@ export class SignupComponent implements OnInit {
     }
 
     ngOnInit(): void {
+        this._success.subscribe((message) => this.successMessage = message);
+        this._success.pipe(
+            debounceTime(2000)
+        ).subscribe(() => this.successMessage = null);
+
         this.http.get('/api/config').toPromise().then(resp => {
             if (resp.json().data) {
                 this.secret = resp.json().data;
@@ -95,11 +108,11 @@ export class SignupComponent implements OnInit {
         this.signup.password = encrypted;
         this.http.post(`/api/v1/user`, this.signup).toPromise().then(resp => {
             console.log('response');
-            alert('가입완료');
+            this._success.next('가입 완료');
             this.onClickCancel();
         }).catch(err => {
             console.error(err);
-            alert('정상적인 요청이 아닙니다. {' + err + '}');
+            this._success.next('정상적인 요청이 아닙니다. : ' + err);
         });
     }
 }

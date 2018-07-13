@@ -13,8 +13,9 @@ import {Router} from '@angular/router';
             <div class="col-lg-12" style="margin: 20px">
                 <ul class="list-group">
                     <li *ngFor="let item of items"
-                        class="list-group-item d-flex justify-content-between align-items-center">
-                        <a (click)="goTo(item)">{{ item.title }} / {{item.isbn}}</a>
+                        class="list-group-item d-flex justify-content-between align-items-center" (mouseleave)="hoverEvent($event)"
+                        (mouseenter)="hoverEvent($event)">
+                        <a (click)="goTo(item)">{{ item.title }} / {{item.publisher}}</a>
                         <button class="btn btn-outline-danger" (click)="itemRemove(item.id)">삭제</button>
                     </li>
                 </ul>
@@ -72,5 +73,13 @@ export class BookmarkComponent implements OnInit {
         }).catch(err => {
             console.log(err);
         });
+    }
+
+    hoverEvent(event: any) {
+        if (event.type === 'mouseenter') {
+            event.target.style.backgroundColor = 'rgb(247, 247, 247)';
+        } else {
+            event.target.style.backgroundColor = 'rgb(255, 255, 255)';
+        }
     }
 }

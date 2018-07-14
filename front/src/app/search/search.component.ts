@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {AfterViewInit, Component, OnInit} from '@angular/core';
 import {HttpClient} from '../common/http.client';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Location} from '@angular/common';
@@ -88,7 +88,7 @@ import {Location} from '@angular/common';
         </div>
     `,
 })
-export class SearchComponent implements OnInit {
+export class SearchComponent implements OnInit, AfterViewInit {
     targetNameMap = {
         'all': '전체',
         'title': '책제목',
@@ -101,7 +101,7 @@ export class SearchComponent implements OnInit {
         'recency': '최신순'
     };
 
-    page = 1;   // 페이지(max: 50)
+    page = this.activatedRoute.snapshot.queryParams.page || 1;   // 페이지(max: 50)
     size = 10; // 페이지당 보여줄 원소 수(max: 50)
     total = 10; // 검색어에 검색된 문서수
     query = '';
@@ -112,15 +112,19 @@ export class SearchComponent implements OnInit {
     data: any = {};
     histories: any = {};
 
-    constructor(private http: HttpClient, private router: Router, private activatedroute: ActivatedRoute, private location: Location) {
+    constructor(private http: HttpClient, private router: Router, private activatedRoute: ActivatedRoute, private location: Location) {
 
     }
 
     ngOnInit(): void {
         this.getHistory();
+    }
+
+
+    ngAfterViewInit(): void {
         console.log(this.router.url.split('/search')[1]);
         if (this.router.url.split('/search')[1]) {
-            let routedQueryParams = this.activatedroute.snapshot.queryParams;
+            let routedQueryParams = this.activatedRoute.snapshot.queryParams;
             this.query = routedQueryParams.query;
             this.page = routedQueryParams.page;
             this.size = routedQueryParams.size;
@@ -128,8 +132,59 @@ export class SearchComponent implements OnInit {
             this.targetName = this.targetNameMap[this.target];
             this.sort = routedQueryParams.sort;
             this.sortName = this.sortNameMap[this.sort];
-            this.doSearch();
+            this.total = this.page * this.size;
         }
+    }
+
+    doSearch() {
+        let path = 'search?query=' + this.query + '&page=' + this.page + '&size='
+            + this.size + '&target=' + this.target + '&sort=' + this.sort;
+
+        this.location.replaceState(path);
+
+        console.log('search params... : ' + path)
+
+        return this.http.get('/api/v2/book/' + path).toPromise().then(result => {
+            let searched = result.json().data;
+            console.log('success to search book, length : ' + searched.documents.length);
+            if (searched.documents.length > -1) {
+                this.data = searched;
+                this.total = searched.total_count > 500 ? 500 : searched.total_count;
+            }
+        }).catch(err => {
+            console.log(err);
+        });
+    }
+
+
+    inquiryBook(book: any) {
+        console.log(book);
+        let params = {
+            queryParams: {
+                query: this.query,
+                page: this.page,
+                size: this.size,
+                target: this.target,
+                sort: this.sort,
+                isbn: book.isbn,
+                barcode: book.barcode,
+                publisher: book.publisher,
+                title: book.title,
+            }
+        };
+        console.log(params);
+        this.router.navigate(['/book'], params);
+    }
+
+    clickSearch() {
+        this.page = 1;
+        this.postHistory().then(result0 => {
+            this.doSearch().then(result1 => {
+                this.getHistory().then(result2 => {
+                    console.log('success to reload histories');
+                });
+            });
+        });
     }
 
     getHistory() {
@@ -153,12 +208,35 @@ export class SearchComponent implements OnInit {
 
     selectHistory(keyword: string) {
         this.query = keyword;
+        this.page = 1;
         this.doSearch().then(result1 => {
             console.log('success to search');
             this.getHistory().then(result2 => {
                 console.log('success to reload histories');
             });
         });
+    }
+
+
+    onKeydown(event: any) {
+        if (event.keyCode === 13) {
+            this.clickSearch();
+        }
+    }
+
+    // pageChange(p: number) {
+    pageChange(p: number) {
+        this.page = p;
+        this.doSearch();
+    }
+
+
+    hoverEvent(event: any) {
+        if (event.type === 'mouseenter') {
+            event.target.style.backgroundColor = 'rgb(247, 247, 247)';
+        } else {
+            event.target.style.backgroundColor = 'rgb(255, 255, 255)';
+        }
     }
 
     selectTarget(event: any) {
@@ -171,77 +249,4 @@ export class SearchComponent implements OnInit {
         this.sort = event.target.value;
     }
 
-    inquiryBook(book: any) {
-        console.log(book);
-        let params = {
-            queryParams: {
-                query: this.query,
-                page: this.page,
-                size: this.size,
-                target: this.target,
-                sort: this.sort,
-                isbn: book.isbn,
-                barcode: book.barcode,
-                publisher: book.publisher,
-                title: book.title,
-            }
-        };
-        console.log(params);
-        this.router.navigate(['/book'], params);
-    }
-
-    pageChange(p: number) {
-        this.page = p;
-        this.doSearch();
-    }
-
-    hoverEvent(event: any) {
-        if (event.type === 'mouseenter') {
-            event.target.style.backgroundColor = 'rgb(247, 247, 247)';
-        } else {
-            event.target.style.backgroundColor = 'rgb(255, 255, 255)';
-        }
-    }
-
-    clickSearch() {
-        this.postHistory().then(result0 => {
-            this.doSearch().then(result1 => {
-                this.getHistory().then(result2 => {
-                    console.log('success to reload histories');
-                });
-            });
-        });
-
-    }
-
-    onKeydown(event: any) {
-        if (event.keyCode === 13) {
-            this.clickSearch();
-        }
-    }
-
-    doSearch() {
-        this.location.replaceState('search?query=' + this.query + '&page=' + this.page + '&size=' + this.size + '&target=' + this.target + '&sort=' + this.sort);
-
-        // /api/book/search
-        // query, page, size, target
-
-        // "pageable_count": 1000,  //total_count 중에 노출가능 문서수
-        // "total_count": 1000,     //검색어에 검색된 문서수
-        // "_end": false            //현재 페이지가 마지막 페이지인지 여부. 값이 false이면 page를 증가시켜 다음 페이지를 요청할 수 있음.
-
-        console.log('search params...');
-        console.log('query : ' + this.query + ', page : ' + this.page + ', size : ' + this.size + ', target : ' + this.target + ', sort : ' + this.sort);
-        let url = '/api/v2/book/search' + '?query=' + this.query + '&page=' + this.page + '&size=' + this.size + '&target=' + this.target + '&sort=' + this.sort;
-        return this.http.get(url).toPromise().then(result => {
-            let searched = result.json().data;
-            console.log('success to search book, length : ' + searched.documents.length);
-            if (searched.documents.length > -1) {
-                this.data = searched;
-                this.total = searched.total_count > 500 ? 500 : searched.total_count;
-            }
-        }).catch(err => {
-            console.log(err);
-        });
-    }
 }

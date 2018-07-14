@@ -33,15 +33,10 @@ import {debounceTime} from 'rxjs/operators';
                 </tr>
                 <tr>
                     <td rowspan="6" style="text-align: center;">
-                        <img style="width: 200px;" *ngIf="book.thumbnail; then thenThumbnailBlock else elseThumbnailBlock"/>
-                        <ng-template #thenThumbnailBlock>
-                            <img style="width: 200px;" src="{{book.thumbnail}}"/>
-                        </ng-template>
-                        <ng-template #elseThumbnailBlock>
-                            <img style="width: 200px;" src="{{noimg}}"/>
-                        </ng-template>
+                        <img style="width: 200px;" *ngIf="book.thumbnail" src="{{book.thumbnail}}"/>
+                        <img style="width: 200px;" *ngIf="!book.thumbnail" src="{{noimg}}"/>
                     </td>
-                    <td *ngIf="book.authors?.length > 0; then thenThumbnailBlock else elseAuthorBlock"></td>
+                    <td *ngIf="book.authors?.length > 0; then thenAuthorBlock else elseAuthorBlock"></td>
                     <ng-template #thenAuthorBlock>
                         <td>저자</td>
                         <td><b>{{book?.authors}}</b> 지음</td>

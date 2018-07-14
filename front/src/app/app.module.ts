@@ -20,6 +20,8 @@ import {ProjectkGuard} from './common/guard';
 import {MenuComponent} from './menu/menu.component';
 import {SignupComponent} from './signup/signup.component';
 import {BookComponent} from './book/book.component';
+import {PopupComponent} from './common/popup.component';
+
 
 @NgModule({
     imports: [
@@ -39,7 +41,11 @@ import {BookComponent} from './book/book.component';
         SearchComponent,
         BookmarkComponent,
         SignupComponent,
-        BookComponent
+        BookComponent,
+        PopupComponent
+    ],
+    entryComponents: [
+        PopupComponent
     ],
     providers: [
         {provide: APP_BASE_HREF, useValue: '/'},

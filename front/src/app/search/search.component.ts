@@ -177,6 +177,9 @@ export class SearchComponent implements OnInit, AfterViewInit {
     }
 
     clickSearch() {
+        if (!this.query || 0) {
+            return;
+        }
         this.page = 1;
         this.postHistory().then(result0 => {
             this.doSearch().then(result1 => {

@@ -15,7 +15,7 @@ import {Router} from '@angular/router';
                     <li *ngFor="let item of items"
                         class="list-group-item d-flex justify-content-between align-items-center" (mouseleave)="hoverEvent($event)"
                         (mouseenter)="hoverEvent($event)">
-                        <a (click)="goTo(item)">{{ item.title }} / {{item.publisher}}</a>
+                        <a style="cursor: pointer;" (click)="goTo(item)">{{ item.title }} / {{item.publisher}}</a>
                         <button class="btn btn-outline-danger" (click)="itemRemove(item.id)">삭제</button>
                     </li>
                 </ul>

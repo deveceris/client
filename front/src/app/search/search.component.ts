@@ -237,8 +237,10 @@ export class SearchComponent implements OnInit, AfterViewInit {
     hoverEvent(event: any) {
         if (event.type === 'mouseenter') {
             event.target.style.backgroundColor = 'rgb(247, 247, 247)';
+            event.target.style.cursor = 'pointer';
         } else {
             event.target.style.backgroundColor = 'rgb(255, 255, 255)';
+            event.target.style.cursor = 'default';
         }
     }
 

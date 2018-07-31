@@ -27,8 +27,7 @@ export class InMemoryDataService implements InMemoryDbService {
             }
         ];
 
-        const search =
-            {
+        const search = {
                 'documents': [{
                     'authors': ['윤석진'],
                     'barcode': 'KOR9791188621279',
@@ -319,9 +318,8 @@ export class InMemoryDataService implements InMemoryDbService {
         config.host = 'localhost'; // default to app web server host
         config.rootPath = this.getRootPath(url); // default to path when app is served (e.g.'/')
         if (url.indexOf('book/search') > 0 || url.indexOf('book/inquiry') > 0) {
-            config.apiBase = '/book'
+            config.apiBase = '/book';
         }
-        debugger;
         let parsedUrl = this.parsedUrl(url, config);
 
         return parsedUrl;
@@ -366,7 +364,6 @@ export class InMemoryDataService implements InMemoryDbService {
             var id = pathSegments[segmentIx++];
             var query = loc.search && new URLSearchParams(loc.search.substr(1));
             var resourceUrl = urlRoot + apiBase + collectionName + '/';
-            debugger;
             return {base: apiBase, collectionName: collectionName, id: id, query: query, resourceUrl: resourceUrl};
         }
         catch (err) {
@@ -411,113 +408,3 @@ export class InMemoryDataService implements InMemoryDbService {
         return path.replace(/\/$/, '');
     }
 }
-
-
-// getRootPath(url: string): string {
-//     // 앞쪽에서부터 우선순위
-//     // collection인 "config" 하위 경로를 제외한
-//     let collectionNames = ['daemons', 'daemon', 'configs', 'config', 'upgrade', 'service'];
-//     for (let i in collectionNames) {
-//         let collectionIndex = url.indexOf(collectionNames[i]);
-//         if (collectionIndex > 0) {
-//             return url.substring(0, collectionIndex - 1);
-//         }
-//     }
-//     return '/api';
-// }
-//
-// parseUrl(url: string): any {
-//
-//     var config: any = {};
-//     config.host = 'localhost'; // default to app web server host
-//     config.rootPath = this.getRootPath(url); // default to path when app is served (e.g.'/')
-//
-//     let parsedUrl = this.parsedUrl(url, config);
-//
-//     return parsedUrl;
-// }
-//
-// parsedUrl(url: string, config: any): any {
-//     try {
-//         var loc = this.getLocation(url);
-//         var drop = config.rootPath.length;
-//         var urlRoot = '';
-//         if (loc.host !== config.host) {
-//             // url for a server on a different host!
-//             // assume it's collection is actually here too.
-//             drop = 1; // the leading slash
-//             urlRoot = loc.protocol + '//' + loc.host + '/';
-//         }
-//         var path = loc.pathname.substring(drop);
-//         var pathSegments = path.split('/');
-//         var segmentIx = 0;
-//         // apiBase: the front part of the path devoted to getting to the api route
-//         // Assumes first path segment if no config.apiBase
-//         // else ignores as many path segments as are in config.apiBase
-//         // Does NOT care what the api base chars actually are.
-//         var apiBase;
-//         // tslint:disable-next-line:triple-equals
-//         debugger;
-//         if (config.apiBase == undefined) {
-//             apiBase = pathSegments[segmentIx++];
-//         }
-//         else {
-//             apiBase = this.removeTrailingSlash(config.apiBase.trim());
-//             if (apiBase) {
-//                 segmentIx = apiBase.split('/').length;
-//             }
-//             else {
-//                 segmentIx = 0; // no api base at all; unwise but allowed.
-//             }
-//         }
-//         apiBase = apiBase + '/';
-//         var collectionName = pathSegments[segmentIx++];
-//         // ignore anything after a '.' (e.g.,the "json" in "customers.json")
-//         collectionName = collectionName && collectionName.split('.')[0];
-//         var id = pathSegments[segmentIx++];
-//         var query = loc.search && new URLSearchParams(loc.search.substr(1));
-//         var resourceUrl = urlRoot + apiBase + collectionName + '/';
-//         return {base: apiBase, collectionName: collectionName, id: id, query: query, resourceUrl: resourceUrl};
-//     }
-//     catch (err) {
-//         var msg = 'unable to parse url \'' + url + '\'; original error: ' + err.message;
-//         throw new Error(msg);
-//     }
-// }
-//
-// getLocation(href: string): any {
-//     if (!href.startsWith('http')) {
-//         // get the document iff running in browser
-//         var doc = (typeof document === 'undefined') ? undefined : document;
-//         // add host info to url before parsing.  Use a fake host when not in browser.
-//         var base = doc ? doc.location.protocol + '//' + doc.location.host : 'http://fake';
-//         href = href.startsWith('/') ? base + href : base + '/' + href;
-//     }
-//     var uri = this.parseuri(href);
-//     var loc = {
-//         host: uri.host,
-//         protocol: uri.protocol,
-//         port: uri.port,
-//         pathname: uri.path,
-//         search: uri.query ? '?' + uri.query : ''
-//     };
-//     return loc;
-// }
-//
-// parseuri(str: string): any {
-//     // tslint:disable-next-line:max-line-length
-//     var URL_REGEX = /^(?:(?![^:@]+:[^:@\/]*@)([^:\/?#.]+):)?(?:\/\/)?((?:(([^:@]*)(?::([^:@]*))?)?@)?([^:\/?#]*)(?::(\d*))?)(((\/(?:[^?#](?![^?#\/]*\.[^?#\/.]+(?:[?#]|$)))*\/?)?([^?#\/]*))(?:\?([^#]*))?(?:#(.*))?)/;
-//     var key = ['source', 'protocol', 'authority', 'userInfo', 'user', 'password', 'host', 'port',
-//         'relative', 'path', 'directory', 'file', 'query', 'anchor'];
-//     var m = URL_REGEX.exec(str);
-//     var uri = {};
-//     var i = 14;
-//     while (i--) {
-//         uri[key[i]] = m[i] || '';
-//     }
-//     return uri;
-// }
-//
-// removeTrailingSlash(path: string): string {
-//     return path.replace(/\/$/, '');
-// }

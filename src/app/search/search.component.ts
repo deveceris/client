@@ -141,10 +141,12 @@ export class SearchComponent implements OnInit, AfterViewInit {
             + this.size + '&target=' + this.target + '&sort=' + this.sort;
 
         this.location.replaceState(path);
-
+        if (process.env.ENV !== 'production') {
+            path = 'search';
+        }
         console.log('search params... : ' + path)
 
-        return this.http.get('/api/v2/book/' + path).toPromise().then(result => {
+        return this.http.get('/book/' + path).toPromise().then(result => {
             let searched = result.json().data;
             console.log('success to search book, length : ' + searched.documents.length);
             if (searched.documents.length > -1) {
@@ -191,7 +193,7 @@ export class SearchComponent implements OnInit, AfterViewInit {
     }
 
     getHistory() {
-        return this.http.get('/api/v1/histories').toPromise().then(result => {
+        return this.http.get('/histories').toPromise().then(result => {
             console.log(result.json().data);
             if (result.json().data.length > -1) {
                 this.histories = result.json().data;
@@ -202,7 +204,7 @@ export class SearchComponent implements OnInit, AfterViewInit {
     }
 
     postHistory() {
-        return this.http.post('/api/v1/history?keyword=' + this.query, null).toPromise().then(result => {
+        return this.http.post('/history?keyword=' + this.query, null).toPromise().then(result => {
             console.log('success to post history');
         }).catch(err => {
             console.log('failed to post history : ' + err);

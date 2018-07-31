@@ -40,7 +40,7 @@ export class BookmarkComponent implements OnInit {
     }
 
     private get() {
-        this.http.get('/api/v1/bookmarks/').toPromise().then(result => {
+        this.http.get('/bookmarks/').toPromise().then(result => {
             if (result.json().data.length > -1) {
                 this.items = result.json().data;
             }
@@ -68,7 +68,7 @@ export class BookmarkComponent implements OnInit {
     }
 
     itemRemove(id: string) {
-        this.http.delete('/api/v1/bookmark/' + id, null).toPromise().then(result => {
+        this.http.delete('/bookmark/' + id, null).toPromise().then(result => {
             this.get();
         }).catch(err => {
             console.log(err);

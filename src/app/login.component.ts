@@ -29,7 +29,7 @@ import {debounceTime} from 'rxjs/operators';
         <div class="row">
             <div class="col-md-4"></div>
             <div class="col-md-6">
-                <form #f="ngForm" (ngSubmit)="onSubmit(f)" novalidate action="/api/login" method="post">
+                <form #f="ngForm" (ngSubmit)="onSubmit(f)" novalidate method="post">
                     <input name="username" type="text" class="form-control" ngModel required placeholder="아이디" tabindex="1"/>
                     <input name="password" type="password" class="form-control" ngModel required placeholder="비밀번호" tabindex="2"/>
                     <br>
@@ -54,7 +54,7 @@ export class LoginComponent implements OnInit {
             debounceTime(1000)
         ).subscribe(() => this.successMessage = null);
 
-        this.http.get('/api/config').toPromise().then(resp => {
+        this.http.get('/config').toPromise().then(resp => {
             if (resp.json().data) {
                 this.secret = resp.json().data;
             }
@@ -63,7 +63,9 @@ export class LoginComponent implements OnInit {
 
     onSubmit(f: NgForm) {
         let authParam = f;
-        authParam.value.password = AES.encrypt(f.value.password, this.secret).toString();
+        if (process.env.ENV === 'production') {
+            authParam.value.password = AES.encrypt(f.value.password, this.secret).toString();
+        }
         this.http.getAuthorizationToken(JSON.stringify(authParam.value), this._success);
     }
 

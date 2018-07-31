@@ -45,7 +45,7 @@ export class HttpClient extends Http {
     getAuthorizationToken(auth: string, _success: any) {
         if (process.env.ENV === 'production') {
             console.log('auth : ' + auth);
-            this.post('/api/login', auth).toPromise().then(res => {
+            this.post('/login', auth).toPromise().then(res => {
                 sessionStorage.setItem('AuthorizationToken', res.headers.get('Authorization'));
                 console.log(res);
                 this.router.navigate(['/search']);
@@ -61,18 +61,30 @@ export class HttpClient extends Http {
     }
 
     get(url: string, options?: RequestOptionsArgs) {
+        if (process.env.ENV === 'production') {
+            url = '/api/v1' + url;
+        }
         return super.get(url, this.addAuthorizationHeader(options));
     }
 
     post(url: string, data: any, options?: RequestOptionsArgs) {
+        if (process.env.ENV === 'production') {
+            url = '/api/v1' + url;
+        }
         return super.post(url, data, this.addAuthorizationHeader(options));
     }
 
     put(url: string, data: any, options?: RequestOptionsArgs) {
+        if (process.env.ENV === 'production') {
+            url = '/api/v1' + url;
+        }
         return super.put(url, data, this.addAuthorizationHeader(options));
     }
 
     delete(url: string, data: any, options?: RequestOptionsArgs) {
+        if (process.env.ENV === 'production') {
+            url = '/api/v1' + url;
+        }
         return super.delete(url, this.addAuthorizationHeader(options));
     }
 

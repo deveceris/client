@@ -127,22 +127,7 @@ export class BookComponent implements OnInit {
     successMessage: string;
 
     bookmarkDisabled = false;
-    // TODO 데이터 삭제할 것
-    book = {
-        title: '제목',
-        authors: '저자',
-        category: '카테고리',
-        contents: '생동감 넘치는 다큐멘터리식으로 꾸며진「다큐멘터리 자연관찰 트윙클」 시리즈. 아이들이 자연의 신비함과 소중함을 자연스럽게 깨닫도록 구성했다. 살아 있는 듯한 생생한 사진과 깊이...',
-        isbn: '고유번호',
-        status: '상태',
-        publisher: '출판사',
-        price: '가격',
-        translators: ['역자'],
-        sale_price: '할인가격',
-        datetime: '2018-01-01T00:00:00.000+09:00',
-        url: 'http://book.daum.net/',
-        thumbnail: ''
-    };
+    book = {};
     noimg = require('../../assets/images/noimg.gif');
 
     constructor(private http: HttpClient, private router: Router, private location: Location) {
@@ -164,7 +149,10 @@ export class BookComponent implements OnInit {
 
     private getBook() {
         let params = this.router.url.split('/book')[1];
-        return this.http.get('/api/v1/book/inquiry' + params).toPromise().then(result => {
+        if (process.env.ENV !== 'production') {
+            params = '';
+        }
+        return this.http.get('/book/inquiry' + params).toPromise().then(result => {
             let data = result.json().data;
             if (data) {
                 this.book = data;
@@ -176,7 +164,10 @@ export class BookComponent implements OnInit {
 
     private getBookmark() {
         let params = this.router.url.split('/book')[1];
-        return this.http.get('/api/v1/bookmark' + params).toPromise().then(result => {
+        if (process.env.ENV !== 'production') {
+            params = '';
+        }
+        return this.http.get('/bookmark' + params).toPromise().then(result => {
             let bookmark = result.json().data;
             console.log(bookmark);
             if (bookmark) {
@@ -191,7 +182,7 @@ export class BookComponent implements OnInit {
 
     saveBookmark() {
         let params = this.router.url.split('/book')[1];
-        this.http.post('/api/v1/bookmark' + params, null).toPromise().then(result => {
+        this.http.post('/bookmark' + params, null).toPromise().then(result => {
             this._success.next('북마크 성공');
             this.bookmarkDisabled = true;
         }).catch(err => {

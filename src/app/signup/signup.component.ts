@@ -69,7 +69,7 @@ export class SignupComponent implements OnInit {
             debounceTime(2000)
         ).subscribe(() => this.successMessage = null);
 
-        this.http.get('/api/config').toPromise().then(resp => {
+        this.http.get('/config').toPromise().then(resp => {
             if (resp.json().data) {
                 this.secret = resp.json().data;
             }
@@ -86,7 +86,7 @@ export class SignupComponent implements OnInit {
 
     confirmUsername(valid: boolean, pristine: boolean, username: string) {
         if (valid && !pristine) {
-            this.http.get(`/api/v1/user/username/` + username).toPromise().then(resp => {
+            this.http.get(`/user/username/` + username).toPromise().then(resp => {
                 if (resp.json().data) {
                     this.usernameDuplicated = true;
                 } else {
@@ -106,7 +106,7 @@ export class SignupComponent implements OnInit {
     onSubmit() {
         let encrypted = AES.encrypt(this.signup.password, this.secret).toString();
         this.signup.password = encrypted;
-        this.http.post(`/api/v1/user`, this.signup).toPromise().then(resp => {
+        this.http.post(`/user`, this.signup).toPromise().then(resp => {
             console.log('response');
             this._success.next('가입 완료');
             this.onClickCancel();

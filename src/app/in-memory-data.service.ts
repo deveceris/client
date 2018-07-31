@@ -4,6 +4,21 @@ import {InMemoryDbService} from 'angular-in-memory-web-api';
 export class InMemoryDataService implements InMemoryDbService {
 
     createDb() {
+        const history = {'keyword' : 'aa'};
+        const histories = [
+            {
+                'message': '',
+                'data': [{'id': 6, 'userId': 1, 'keyword': 'JPA프로그래밍'}, {'id': 5, 'userId': 1, 'keyword': '이펙티브 자바'}, {
+                    'id': 4,
+                    'userId': 1,
+                    'keyword': '이것이리눅스다'
+                }, {'id': 3, 'userId': 1, 'keyword': '어떻게 살것인가'}, {'id': 2, 'userId': 1, 'keyword': '알고리즘'}, {
+                    'id': 1,
+                    'userId': 1,
+                    'keyword': '개미'
+                }]
+            }
+        ];
         const user = [
             {
                 'id': 6,
@@ -11,258 +26,206 @@ export class InMemoryDataService implements InMemoryDbService {
                 'password': 'null'
             }
         ];
-        // http://localhost:8000/api/book/recent
-        const recent = [
-            {
-                'id': 1,
-                'userId': 1,
-                'keyword': '개미'
-            },
-            {
-                'id': 2,
-                'userId': 1,
-                'keyword': '알고리즘'
-            },
-            {
-                'id': 3,
-                'userId': 1,
-                'keyword': '어떻게 살것인가'
-            },
-            {
-                'id': 4,
-                'userId': 1,
-                'keyword': '이것이 리눅스다'
-            },
-            {
-                'id': 5,
-                'userId': 1,
-                'keyword': '이펙티브 자바'
-            },
-            {
-                'id': 6,
-                'userId': 1,
-                'keyword': 'JPA프로그래밍'
-            }
-        ];
 
-        const bookSearch = {
-            'documents': [
-                {
-                    'authors': [
-                        '베르나르 베르베르'
-                    ],
-                    'barcode': 'KOR9788932903491',
-                    'category': '소설',
-                    'contents': '프랑스의 천재 작가 베르나르 베르베르의 개미(전3권)과 개미 이야기 완결판 개미 혁명(전3권)이 2001년 1월 개미로 합쳐져 총 5권으로 출간됐다. 1993년 처음 선보인 개미 1부 개미, 2...',
-                    'datetime': '2010-09-15T15:00:00.000+0000',
-                    'ebook_barcode': 'DGT00020488010YE',
-                    'isbn': '8932903492 9788932903491',
-                    'price': '64000',
-                    'publisher': '열린책들',
-                    'sale_price': '57600',
-                    'sale_yn': 'Y',
-                    'status': '정상판매',
-                    'thumbnail': 'http://t1.daumcdn.net/thumb/R72x100/?fname=http%3A%2F%2Ft1.daumcdn.net%2Fbook%2FKOR9788932903491%3Fmoddttm=20180707082859',
-                    'title': '개미',
-                    'translators': [
-                        '이세욱'
-                    ],
-                    'url': 'http://book.daum.net/detail/book.do?bookid=KOR9788932903491'
-                },
-                {
-                    'authors': [
-                        '한국자연관찰탐구회'
-                    ],
-                    'barcode': 'BOK00030726472YE',
-                    'category': '어린이(초등)',
-                    'contents': '생동감 넘치는 다큐멘터리식으로 꾸며진「다큐멘터리 자연관찰 트윙클」 시리즈. 아이들이 자연의 신비함과 소중함을 자연스럽게 깨닫도록 구성했다. 살아 있는 듯한 생생한 사진과 깊이...',
-                    'datetime': '2016-05-31T15:00:00.000+0000',
+        const search =
+            {
+                'documents': [{
+                    'authors': ['윤석진'],
+                    'barcode': 'KOR9791188621279',
+                    'category': '컴퓨터/IT',
+                    'contents': '자바 기반의 웹 서비스를 가장 쉽고 빠르게 배운다!  시중에는 자바 웹 개발자를 위한 스프링과 JSP 관련 서적이 많이 나와 있긴 하지만, 입문자가 끝까지 따라 할 만한 책은 많지 않습니다...',
+                    'datetime': 1530198000000,
                     'ebook_barcode': '',
-                    'isbn': '8956942927 9788956942926',
-                    'price': '11000',
-                    'publisher': '키즈덤하우스',
-                    'sale_price': '9900',
+                    'isbn': '1188621270 9791188621279',
+                    'price': '27000',
+                    'publisher': '제이펍',
+                    'sale_price': '24300',
                     'sale_yn': 'Y',
                     'status': '정상판매',
-                    'thumbnail': 'http://t1.daumcdn.net/thumb/R72x100/?fname=http%3A%2F%2Ft1.daumcdn.net%2Fbook%2FBOK00030726472YE%3Fmoddttm=20180417060415',
-                    'title': '개미',
+                    'thumbnail': 'http://t1.daumcdn.net/thumb/R72x100/?fname=http%3A%2F%2Ft1.daumcdn.net%2Fbook%2Fimage%2FKOR9791188621279%3Fmoddttm=20180731091029',
+                    'title': '자바 웹 개발',
                     'translators': [],
-                    'url': 'http://book.daum.net/detail/book.do?bookid=BOK00030726472YE'
-                },
-                {
-                    'authors': [
-                        '편집부'
-                    ],
-                    'barcode': 'KOR9791159480805',
-                    'category': '유아(0~7세)',
-                    'contents': '꼬마 지팡이 자연 동화 『부지런한 개미』. 아이들이 가장 좋아하는 동물들의 이야기로 알차게 엮었어요. 동물들이 주인공으로 등장해 아이들이 더 좋아하는 꼬마지팡이 자연 동화! 아이들의...',
-                    'datetime': '2016-05-31T15:00:00.000+0000',
+                    'url': 'http://book.daum.net/detail/book.do?bookid=KOR9791188621279'
+                }, {
+                    'authors': ['프란체스코 마르치오니', '마닉 수르타니'],
+                    'barcode': 'KOR9788960775244',
+                    'category': '컴퓨터/IT',
+                    'contents': '『오픈소스 JBoss로 확장형 대용량 시스템 만들기 세트』는《JBoss AS 7 애플리케이션 개발》《JBoss AS 7 따라잡기》《JBoss 인피니스팬 따라잡기》의 3권으로 구성된 세트이다. JBoss...',
+                    'datetime': 1392822000000,
                     'ebook_barcode': '',
-                    'isbn': '115948080X 9791159480805',
-                    'price': '4000',
-                    'publisher': '그린키즈',
-                    'sale_price': '3600',
+                    'isbn': '896077524X 9788960775244',
+                    'price': '72000',
+                    'publisher': '에이콘출판사',
+                    'sale_price': '64800',
                     'sale_yn': 'Y',
                     'status': '정상판매',
-                    'thumbnail': 'http://t1.daumcdn.net/thumb/P72x100/?fname=http%3A%2F%2Ft1.daumcdn.net%2Fbook%2FKOR9791159480805%3Fmoddttm=20180618060338',
-                    'title': '개미',
-                    'translators': [],
-                    'url': 'http://book.daum.net/detail/book.do?bookid=KOR9791159480805'
-                },
-                {
-                    'authors': [
-                        '편집부'
-                    ],
-                    'barcode': 'BOK00022256072IN',
-                    'category': '유아(0~7세)',
-                    'contents': '[리틀자연픽처북 시리즈]선명하고 생생한 동물사진으로 가득찬 미리배우는 자연탐구',
-                    'datetime': '2011-12-31T15:00:00.000+0000',
+                    'thumbnail': 'http://t1.daumcdn.net/thumb/R72x100/?fname=http%3A%2F%2Ft1.daumcdn.net%2Fbook%2FKOR9788960775244%3Fmoddttm=20180731072946',
+                    'title': '오픈소스 JBoss로 확장형 대용량 시스템 만들기 세트',
+                    'translators': ['최지웅'],
+                    'url': 'http://book.daum.net/detail/book.do?bookid=KOR9788960775244'
+                }, {
+                    'authors': ['Willie Wheeler', 'Joshua White'],
+                    'barcode': 'KOR9788963510521',
+                    'category': '컴퓨터/IT',
+                    'contents': '『스프링 프레임워크의 실제(Spring in Practice)』는 자바 기반의 프로그래밍 기술을 어느 정도 이해하고 있으면서 최신 트렌드에 맞는 기법을 터득하고자 하는 독자들에게 유익한 실전...',
+                    'datetime': 1431874800000,
                     'ebook_barcode': '',
-                    'isbn': '8965861551 9788965861553',
-                    'price': '8000',
-                    'publisher': '월드베스트',
-                    'sale_price': '7200',
+                    'isbn': '8963510522 9788963510521',
+                    'price': '33000',
+                    'publisher': 'ITC',
+                    'sale_price': '29700',
+                    'sale_yn': 'Y',
+                    'status': '정상판매',
+                    'thumbnail': 'http://t1.daumcdn.net/thumb/R72x100/?fname=http%3A%2F%2Ft1.daumcdn.net%2Fbook%2FKOR9788963510521%3Fmoddttm=20180728074231',
+                    'title': '스프링 프레임워크의 실제(Spring in Practice)',
+                    'translators': ['남정현'],
+                    'url': 'http://book.daum.net/detail/book.do?bookid=KOR9788963510521'
+                }, {
+                    'authors': ['클라렌스 호', '롭 해롭'],
+                    'barcode': 'KOR9788998139032',
+                    'category': '컴퓨터/IT',
+                    'contents': '설명하고 있다. 또한 일반적으로 개발자들에게 익숙한 DAO 레이어를 그대로 사용하는 대신 JPA를 활용해 엔티티매니저를 서비스 레이어로 직접 주입하는 방식을 통해 최신 개발 기법을 설명...',
+                    'datetime': 1348758000000,
+                    'ebook_barcode': '',
+                    'isbn': '8998139030 9788998139032',
+                    'price': '45000',
+                    'publisher': '위키북스',
+                    'sale_price': '40500',
+                    'sale_yn': 'Y',
+                    'status': '정상판매',
+                    'thumbnail': 'http://t1.daumcdn.net/thumb/R72x100/?fname=http%3A%2F%2Ft1.daumcdn.net%2Fbook%2FKOR9788998139032%3Fmoddttm=20180302060337',
+                    'title': '프로 스프링. 3',
+                    'translators': ['유윤선'],
+                    'url': 'http://book.daum.net/detail/book.do?bookid=KOR9788998139032'
+                }, {
+                    'authors': ['이일민'],
+                    'barcode': 'BOK00018985708BA',
+                    'category': '컴퓨터/IT',
+                    'contents': 'DB 프로그래밍, 그리고 기초적인 웹 개발 지식이 필요하다. Vol. 2에는 스프링 외의 서드파티 프레임워크나 JavaEE 표준 기술을 스프링에 통합해서 사용하는 내용이 일부 포함되어 있다...',
+                    'datetime': 1348153200000,
+                    'ebook_barcode': '',
+                    'isbn': '8960773425 9788960773424',
+                    'price': '40000',
+                    'publisher': '에이콘출판',
+                    'sale_price': '36000',
+                    'sale_yn': 'Y',
+                    'status': '정상판매',
+                    'thumbnail': 'http://t1.daumcdn.net/thumb/R72x100/?fname=http%3A%2F%2Ft1.daumcdn.net%2Fbook%2FBOK00018985708BA%3Fmoddttm=20180705073742',
+                    'title': '토비의 스프링 3.1 Vol. 2: 스프링의 기술과 선택',
+                    'translators': [],
+                    'url': 'http://book.daum.net/detail/book.do?bookid=BOK00018985708BA'
+                }, {
+                    'authors': ['최범균'],
+                    'barcode': 'KOR9788980782710',
+                    'category': '컴퓨터/IT',
+                    'contents': '『웹 개발자를 위한 Spring 4.0 프로그래밍』는 스프링 4의 새로운 특징 포함하고 스프링 DI...웹소켓, JDB, 하이버네이트, JPA, MyBatis 연동과 스프링 데이터 JPA, 일반적인 웹...',
+                    'datetime': 1407164400000,
+                    'ebook_barcode': '',
+                    'isbn': '8980782713 9788980782710',
+                    'price': '32000',
+                    'publisher': '가메',
+                    'sale_price': '28800',
+                    'sale_yn': 'Y',
+                    'status': '정상판매',
+                    'thumbnail': 'http://t1.daumcdn.net/thumb/R72x100/?fname=http%3A%2F%2Ft1.daumcdn.net%2Fbook%2FKOR9788980782710%3Fmoddttm=20180731073055',
+                    'title': '웹 개발자를 위한 Spring 4.0 프로그래밍',
+                    'translators': [],
+                    'url': 'http://book.daum.net/detail/book.do?bookid=KOR9788980782710'
+                }, {
+                    'authors': ['최범균'],
+                    'barcode': 'KOR9788980782901',
+                    'category': '컴퓨터/IT',
+                    'contents': 'JPA(Java Persistence API)를 시작하려는 개발자를 위한 입문서 『JPA 프로그래밍 입문』. 엔티티, 밸류에 대한 기본 매핑부터 콜렉션 매핑까지 핵심 설정 설명하고 쿼리 방식 조회(JPQL...',
+                    'datetime': 1496156400000,
+                    'ebook_barcode': '',
+                    'isbn': '898078290X 9788980782901',
+                    'price': '25000',
+                    'publisher': '가메',
+                    'sale_price': '22500',
+                    'sale_yn': 'Y',
+                    'status': '정상판매',
+                    'thumbnail': 'http://t1.daumcdn.net/thumb/R72x100/?fname=http%3A%2F%2Ft1.daumcdn.net%2Fbook%2FKOR9788980782901%3Fmoddttm=20180729075417',
+                    'title': 'JPA 프로그래밍 입문',
+                    'translators': [],
+                    'url': 'http://book.daum.net/detail/book.do?bookid=KOR9788980782901'
+                }, {
+                    'authors': ['윌리엄스'],
+                    'barcode': 'KOR9788998139773',
+                    'category': '컴퓨터/IT',
+                    'contents': '기존의 자바 웹 개발 기술을 한 단계 끌어올리도록 돕는다. 처음부터 차례로 읽으면서 배우거나 자바 프로그래밍에 대한 구체적인 질문이 있을 때 찾아보는 참고서로도 활용할 수 있다...',
+                    'datetime': 1424012400000,
+                    'ebook_barcode': '',
+                    'isbn': '8998139774 9788998139773',
+                    'price': '48000',
+                    'publisher': '위키북스',
+                    'sale_price': '43200',
+                    'sale_yn': 'Y',
+                    'status': '정상판매',
+                    'thumbnail': 'http://t1.daumcdn.net/thumb/R72x100/?fname=http%3A%2F%2Ft1.daumcdn.net%2Fbook%2FKOR9788998139773%3Fmoddttm=20180219145833',
+                    'title': '자바 웹 개발 완벽 가이드',
+                    'translators': ['최민석'],
+                    'url': 'http://book.daum.net/detail/book.do?bookid=KOR9788998139773'
+                }, {
+                    'authors': ['게리 막', '조시 롱', '다니엘 루비오'],
+                    'barcode': 'BOK0001155669311',
+                    'category': '컴퓨터/IT',
+                    'contents': '무엇이며, 어떻게 사용하는지 다루는 것부터 AspectJ를 활용한 스프링의 관점지향 프로그래밍 기능, 그루비, 빈쉘, 제이루비 같은 스크립트 언어를 스프링 프레임워크와 함께 사용하는 방법...',
+                    'datetime': 1301410800000,
+                    'ebook_barcode': '',
+                    'isbn': '8992939760 9788992939768',
+                    'price': '45000',
+                    'publisher': '위키북스',
+                    'sale_price': '40500',
                     'sale_yn': 'N',
                     'status': '가격 확인 중',
-                    'thumbnail': 'http://t1.daumcdn.net/thumb/P72x100/?fname=http%3A%2F%2Ft1.daumcdn.net%2Fbook%2FBOK00022256072IN%3Fmoddttm=20180219145833',
-                    'title': '개미',
+                    'thumbnail': 'http://t1.daumcdn.net/thumb/R72x100/?fname=http%3A%2F%2Ft1.daumcdn.net%2Fbook%2FBOK0001155669311%3Fmoddttm=20170929060552',
+                    'title': '스프링 3 레시피',
+                    'translators': ['고종봉', '백기선'],
+                    'url': 'http://book.daum.net/detail/book.do?bookid=BOK0001155669311'
+                }, {
+                    'authors': ['최범균'],
+                    'barcode': 'BOK00010572348IN',
+                    'category': '컴퓨터/IT',
+                    'contents': 'DI, AOP상세한 스프링 MVC 설명 (XML, JSON 등 RESTful 관련 내용 포함)JDBC, 하이버네이트, JPA, iBATIS 연동, 트랜잭션 설정TransactionsEssentials를 이용한 글로벌 트랜잭션 처리JAXB2를...',
+                    'datetime': 1277650800000,
+                    'ebook_barcode': '',
+                    'isbn': '8980782314 9788980782314',
+                    'price': '28000',
+                    'publisher': '가메',
+                    'sale_price': '25200',
+                    'sale_yn': 'Y',
+                    'status': '정상판매',
+                    'thumbnail': 'http://t1.daumcdn.net/thumb/R72x100/?fname=http%3A%2F%2Ft1.daumcdn.net%2Fbook%2FBOK00010572348IN%3Fmoddttm=20171022080619',
+                    'title': 'SPRING 3.0 프로그래밍',
                     'translators': [],
-                    'url': 'http://book.daum.net/detail/book.do?bookid=BOK00022256072IN'
-                },
-                {
-                    'authors': [
-                        '베르나르 베르베르'
-                    ],
-                    'barcode': 'BOK00034903210YE',
-                    'category': '소설',
-                    'contents': '막심 고리끼 『어머니』, 니코스 카잔차키스의 『그리스인 조르바』, 베르나르 베르베르의 [개미 3부작]의 제1부 『개미』, 조르주 심농의 매그레 시리즈 중 4편을 수록한 『갈레 씨, 홀로...',
-                    'datetime': '2016-09-14T15:00:00.000+0000',
-                    'ebook_barcode': '',
-                    'isbn': '8932917876 9788932917870',
-                    'price': '10000',
-                    'publisher': '열린책들',
-                    'sale_price': '9000',
-                    'sale_yn': 'Y',
-                    'status': '정상판매',
-                    'thumbnail': 'http://t1.daumcdn.net/thumb/R72x100/?fname=http%3A%2F%2Ft1.daumcdn.net%2Fbook%2Fimage%2FBOK00034903210YE%3Fmoddttm=20180707082656',
-                    'title': '개미',
-                    'translators': [
-                        '임호경',
-                        '이세욱'
-                    ],
-                    'url': 'http://book.daum.net/detail/book.do?bookid=BOK00034903210YE'
-                },
-                {
-                    'authors': [
-                        '전석'
-                    ],
-                    'barcode': 'BOK00033247462YE',
-                    'category': '경제/경영',
-                    'contents': '초보자도 쉽게 이해하는 주식 공부! 처음 기술적 분석을 공부하다가 힘들다고 포기하는 부분이 바로 &#39;캔들과 거래량&#39;이다. 그 이유는 병렬적 그림의 나열과 암기 강요로 인한 피로감 때문...',
-                    'datetime': '2017-11-26T15:00:00.000+0000',
-                    'ebook_barcode': '',
-                    'isbn': '1196119589 9791196119584',
-                    'price': '18000',
-                    'publisher': '오베이북스',
-                    'sale_price': '16200',
-                    'sale_yn': 'Y',
-                    'status': '정상판매',
-                    'thumbnail': 'http://t1.daumcdn.net/thumb/R72x100/?fname=http%3A%2F%2Ft1.daumcdn.net%2Fbook%2FBOK00033247462YE%3Fmoddttm=20180708072617',
-                    'title': '개미대학 세력의 매집원가 구하기(주식 최단기간 고수되기)',
-                    'translators': [],
-                    'url': 'http://book.daum.net/detail/book.do?bookid=BOK00033247462YE'
-                },
-                {
-                    'authors': [
-                        '로랑 켈러',
-                        '엘리자베스 고르동'
-                    ],
-                    'barcode': 'KOR9788959791583',
-                    'category': '과학',
-                    'contents': '지구를 지배하는 작은 생물, 개미의 신비를 파헤치다!  신비하고 매혹적인 개미의 세계를 소개하는 교양과학서『개미』. 여러 종류의 개미와 특성, 생태에 대해 알기 쉽고 재미있게 설명하는...',
-                    'datetime': '2009-10-28T15:00:00.000+0000',
-                    'ebook_barcode': '',
-                    'isbn': '895979158X 9788959791583',
-                    'price': '13600',
-                    'publisher': '작은책방',
-                    'sale_price': '12240',
-                    'sale_yn': 'Y',
-                    'status': '정상판매',
-                    'thumbnail': 'http://t1.daumcdn.net/thumb/R72x100/?fname=http%3A%2F%2Ft1.daumcdn.net%2Fbook%2FKOR9788959791583%3Fmoddttm=20140710073008',
-                    'title': '개미',
-                    'translators': [
-                        '양진성'
-                    ],
-                    'url': 'http://book.daum.net/detail/book.do?bookid=KOR9788959791583'
-                },
-                {
-                    'authors': [
-                        '이경민',
-                        '이혜경'
-                    ],
-                    'barcode': 'BOK00010692722YO',
-                    'category': '인문',
-                    'contents': '영유아를 위한 주제별 과학 활동 교재 『개미』. 과학 주제를 과학적 개념을 중심으로 활동을 다양하게 진행함으로써 탐구능력과 과학적 태도는 물론 과학적 개념 형성을 돕도록 구성되어...',
-                    'datetime': '2010-05-24T15:00:00.000+0000',
-                    'ebook_barcode': '',
-                    'isbn': '895809107X 9788958091073',
-                    'price': '12000',
-                    'publisher': '정민사',
-                    'sale_price': '12000',
-                    'sale_yn': 'Y',
-                    'status': '정상판매',
-                    'thumbnail': 'http://t1.daumcdn.net/thumb/R72x100/?fname=http%3A%2F%2Ft1.daumcdn.net%2Fbook%2FBOK00010692722YO%3Fmoddttm=20180403145049',
-                    'title': '개미',
-                    'translators': [],
-                    'url': 'http://book.daum.net/detail/book.do?bookid=BOK00010692722YO'
-                },
-                {
-                    'authors': [
-                        '이지치 에이신'
-                    ],
-                    'barcode': 'KOR9788991563797',
-                    'category': '어린이(초등)',
-                    'contents': '생태 관찰 백과사전『호기심 가득! - 벌레들의 한살이』시리즈 제5권 ≪개미≫. 이 시리즈는 벌레에 흥미를 가지기 시작한 아이에게 우리 주변에서 볼 수 있는 벌레의 생태를 생생한 사진...',
-                    'datetime': '2005-07-03T15:00:00.000+0000',
-                    'ebook_barcode': '',
-                    'isbn': '8991563791 9788991563797',
-                    'price': '10000',
-                    'publisher': '몬테소리CM',
-                    'sale_price': '3500',
-                    'sale_yn': 'N',
-                    'status': '가격 확인 중',
-                    'thumbnail': 'http://t1.daumcdn.net/thumb/R72x100/?fname=http%3A%2F%2Ft1.daumcdn.net%2Fbook%2FKOR9788991563797%3Fmoddttm=20160107070547',
-                    'title': '개미',
-                    'translators': [
-                        '장상욱'
-                    ],
-                    'url': 'http://book.daum.net/detail/book.do?bookid=KOR9788991563797'
-                },
-                {
-                    'authors': [
-                        '노혜찬'
-                    ],
-                    'barcode': 'KOR9788995529416',
-                    'category': '소설',
-                    'contents': '불량청소년에서 건달로, 그리고 깡패 두목에서 국회의원까지의 드라마틱한 인생을 살아온 홍성두라는 인물의 인생기를 담는다. 아웃사이더에 불과했던 주인공이 온갖 권모술수를 서서 출세를...',
-                    'datetime': '2004-04-21T15:00:00.000+0000',
-                    'ebook_barcode': '',
-                    'isbn': '8995529415 9788995529416',
-                    'price': '9000',
-                    'publisher': '방동',
-                    'sale_price': '3000',
-                    'sale_yn': 'Y',
-                    'status': '정상판매',
-                    'thumbnail': 'http://t1.daumcdn.net/thumb/R72x100/?fname=http%3A%2F%2Ft1.daumcdn.net%2Fbook%2FKOR9788995529416%3Fmoddttm=20160105074604',
-                    'title': '개미',
-                    'translators': [],
-                    'url': 'http://book.daum.net/detail/book.do?bookid=KOR9788995529416'
+                    'url': 'http://book.daum.net/detail/book.do?bookid=BOK00010572348IN'
                 }
-            ],
-            'pageable_count': 1000,
-            'total_count': 1000,
-            '_end': false
-        };
+                ],
+                'pageable_count': 28,
+                'total_count': 28,
+                '_end': false
+
+            };
+        const inquiry = {
+                'authors': [
+                    '윤석진'
+                ],
+                'barcode': 'KOR9791188621279',
+                'category': '컴퓨터/IT',
+                'contents': '자바 기반의 웹 서비스를 가장 쉽고 빠르게 배운다!  시중에는 자바 웹 개발자를 위한 스프링과 JSP 관련 서적이 많이 나와 있긴 하지만, 입문자가 끝까지 따라 할 만한 책은 많지 않습니다...',
+                'datetime': 1530198000000,
+                'ebook_barcode': '',
+                'isbn': '1188621270 9791188621279',
+                'price': '27000',
+                'publisher': '제이펍',
+                'sale_price': '24300',
+                'sale_yn': 'Y',
+                'status': '정상판매',
+                'thumbnail': 'http://t1.daumcdn.net/thumb/R72x100/?fname=http%3A%2F%2Ft1.daumcdn.net%2Fbook%2Fimage%2FKOR9791188621279%3Fmoddttm=20180731091029',
+                'title': '자바 웹 개발',
+                'translators': ['남정현'],
+                'url': 'http://book.daum.net/detail/book.do?bookid=KOR9791188621279'
+            };
         const book = [
             {
                 'documents': [
@@ -296,7 +259,7 @@ export class InMemoryDataService implements InMemoryDbService {
         ];
 
         const bookmark = {
-            'id': 8,
+            'id': 1,
             'title': '개미',
             'isbn': '8932903492'
         };
@@ -328,116 +291,233 @@ export class InMemoryDataService implements InMemoryDbService {
                 'isbn': '1196119589'
             }
         ];
-        return {user, bookSearch, recent, book, bookmarks, bookmark};
+        const config = [
+            {
+                'message': '',
+                'data': '0:0:0:0:0:0:0:1'
+            }
+        ];
+        return {user, search, book, bookmarks, bookmark, config, histories, history, inquiry};
     }
 
 
-    // getRootPath(url: string): string {
-    //     // 앞쪽에서부터 우선순위
-    //     // collection인 "config" 하위 경로를 제외한
-    //     let collectionNames = ['daemons', 'daemon', 'configs', 'config', 'upgrade', 'service'];
-    //     for (let i in collectionNames) {
-    //         let collectionIndex = url.indexOf(collectionNames[i]);
-    //         if (collectionIndex > 0) {
-    //             return url.substring(0, collectionIndex - 1);
-    //         }
-    //     }
-    //     return '/api';
-    // }
-    //
-    // parseUrl(url: string): any {
-    //
-    //     var config: any = {};
-    //     config.host = 'localhost'; // default to app web server host
-    //     config.rootPath = this.getRootPath(url); // default to path when app is served (e.g.'/')
-    //
-    //     let parsedUrl = this.parsedUrl(url, config);
-    //
-    //     return parsedUrl;
-    // }
-    //
-    // parsedUrl(url: string, config: any): any {
-    //     try {
-    //         var loc = this.getLocation(url);
-    //         var drop = config.rootPath.length;
-    //         var urlRoot = '';
-    //         if (loc.host !== config.host) {
-    //             // url for a server on a different host!
-    //             // assume it's collection is actually here too.
-    //             drop = 1; // the leading slash
-    //             urlRoot = loc.protocol + '//' + loc.host + '/';
-    //         }
-    //         var path = loc.pathname.substring(drop);
-    //         var pathSegments = path.split('/');
-    //         var segmentIx = 0;
-    //         // apiBase: the front part of the path devoted to getting to the api route
-    //         // Assumes first path segment if no config.apiBase
-    //         // else ignores as many path segments as are in config.apiBase
-    //         // Does NOT care what the api base chars actually are.
-    //         var apiBase;
-    //         // tslint:disable-next-line:triple-equals
-    //         debugger;
-    //         if (config.apiBase == undefined) {
-    //             apiBase = pathSegments[segmentIx++];
-    //         }
-    //         else {
-    //             apiBase = this.removeTrailingSlash(config.apiBase.trim());
-    //             if (apiBase) {
-    //                 segmentIx = apiBase.split('/').length;
-    //             }
-    //             else {
-    //                 segmentIx = 0; // no api base at all; unwise but allowed.
-    //             }
-    //         }
-    //         apiBase = apiBase + '/';
-    //         var collectionName = pathSegments[segmentIx++];
-    //         // ignore anything after a '.' (e.g.,the "json" in "customers.json")
-    //         collectionName = collectionName && collectionName.split('.')[0];
-    //         var id = pathSegments[segmentIx++];
-    //         var query = loc.search && new URLSearchParams(loc.search.substr(1));
-    //         var resourceUrl = urlRoot + apiBase + collectionName + '/';
-    //         return {base: apiBase, collectionName: collectionName, id: id, query: query, resourceUrl: resourceUrl};
-    //     }
-    //     catch (err) {
-    //         var msg = 'unable to parse url \'' + url + '\'; original error: ' + err.message;
-    //         throw new Error(msg);
-    //     }
-    // }
-    //
-    // getLocation(href: string): any {
-    //     if (!href.startsWith('http')) {
-    //         // get the document iff running in browser
-    //         var doc = (typeof document === 'undefined') ? undefined : document;
-    //         // add host info to url before parsing.  Use a fake host when not in browser.
-    //         var base = doc ? doc.location.protocol + '//' + doc.location.host : 'http://fake';
-    //         href = href.startsWith('/') ? base + href : base + '/' + href;
-    //     }
-    //     var uri = this.parseuri(href);
-    //     var loc = {
-    //         host: uri.host,
-    //         protocol: uri.protocol,
-    //         port: uri.port,
-    //         pathname: uri.path,
-    //         search: uri.query ? '?' + uri.query : ''
-    //     };
-    //     return loc;
-    // }
-    //
-    // parseuri(str: string): any {
-    //     // tslint:disable-next-line:max-line-length
-    //     var URL_REGEX = /^(?:(?![^:@]+:[^:@\/]*@)([^:\/?#.]+):)?(?:\/\/)?((?:(([^:@]*)(?::([^:@]*))?)?@)?([^:\/?#]*)(?::(\d*))?)(((\/(?:[^?#](?![^?#\/]*\.[^?#\/.]+(?:[?#]|$)))*\/?)?([^?#\/]*))(?:\?([^#]*))?(?:#(.*))?)/;
-    //     var key = ['source', 'protocol', 'authority', 'userInfo', 'user', 'password', 'host', 'port',
-    //         'relative', 'path', 'directory', 'file', 'query', 'anchor'];
-    //     var m = URL_REGEX.exec(str);
-    //     var uri = {};
-    //     var i = 14;
-    //     while (i--) {
-    //         uri[key[i]] = m[i] || '';
-    //     }
-    //     return uri;
-    // }
-    //
-    // removeTrailingSlash(path: string): string {
-    //     return path.replace(/\/$/, '');
-    // }
+    getRootPath(url: string): string {
+        // 앞쪽에서부터 우선순위
+        // collection인 "config" 하위 경로를 제외한
+        let collectionNames = ['history', 'user', 'book', 'bookmarks', 'bookmark', 'config', 'histories', 'search', 'inquiry'];
+        for (let i in collectionNames) {
+            let collectionIndex = url.indexOf(collectionNames[i]);
+            if (collectionIndex > 0) {
+                return url.substring(0, collectionIndex - 1);
+            }
+        }
+        return '/api';
+    }
+
+    parseUrl(url: string): any {
+        var config: any = {};
+        config.host = 'localhost'; // default to app web server host
+        config.rootPath = this.getRootPath(url); // default to path when app is served (e.g.'/')
+        if (url.indexOf('book/search') > 0 || url.indexOf('book/inquiry') > 0) {
+            config.apiBase = '/book'
+        }
+        debugger;
+        let parsedUrl = this.parsedUrl(url, config);
+
+        return parsedUrl;
+    }
+
+    parsedUrl(url: string, config: any): any {
+        try {
+            var loc = this.getLocation(url);
+            var drop = config.rootPath.length;
+            var urlRoot = '';
+            if (loc.host !== config.host) {
+                // url for a server on a different host!
+                // assume it's collection is actually here too.
+                drop = 1; // the leading slash
+                urlRoot = loc.protocol + '//' + loc.host + '/';
+            }
+            var path = loc.pathname.substring(drop);
+            var pathSegments = path.split('/');
+            var segmentIx = 0;
+            // apiBase: the front part of the path devoted to getting to the api route
+            // Assumes first path segment if no config.apiBase
+            // else ignores as many path segments as are in config.apiBase
+            // Does NOT care what the api base chars actually are.
+            var apiBase;
+            // tslint:disable-next-line:triple-equals
+            if (config.apiBase == undefined) {
+                apiBase = pathSegments[segmentIx++];
+            }
+            else {
+                apiBase = this.removeTrailingSlash(config.apiBase.trim());
+                if (apiBase) {
+                    segmentIx = apiBase.split('/').length;
+                }
+                else {
+                    segmentIx = 0; // no api base at all; unwise but allowed.
+                }
+            }
+            apiBase = apiBase + '/';
+            var collectionName = pathSegments[segmentIx++];
+            // ignore anything after a '.' (e.g.,the "json" in "customers.json")
+            collectionName = collectionName && collectionName.split('.')[0];
+            var id = pathSegments[segmentIx++];
+            var query = loc.search && new URLSearchParams(loc.search.substr(1));
+            var resourceUrl = urlRoot + apiBase + collectionName + '/';
+            debugger;
+            return {base: apiBase, collectionName: collectionName, id: id, query: query, resourceUrl: resourceUrl};
+        }
+        catch (err) {
+            var msg = 'unable to parse url \'' + url + '\'; original error: ' + err.message;
+            throw new Error(msg);
+        }
+    }
+
+    getLocation(href: string): any {
+        if (!href.startsWith('http')) {
+            // get the document iff running in browser
+            var doc = (typeof document === 'undefined') ? undefined : document;
+            // add host info to url before parsing.  Use a fake host when not in browser.
+            var base = doc ? doc.location.protocol + '//' + doc.location.host : 'http://fake';
+            href = href.startsWith('/') ? base + href : base + '/' + href;
+        }
+        var uri = this.parseuri(href);
+        var loc = {
+            host: uri.host,
+            protocol: uri.protocol,
+            port: uri.port,
+            pathname: uri.path,
+            search: uri.query ? '?' + uri.query : ''
+        };
+        return loc;
+    }
+    parseuri(str: string): any {
+        // tslint:disable-next-line:max-line-length
+        var URL_REGEX = /^(?:(?![^:@]+:[^:@\/]*@)([^:\/?#.]+):)?(?:\/\/)?((?:(([^:@]*)(?::([^:@]*))?)?@)?([^:\/?#]*)(?::(\d*))?)(((\/(?:[^?#](?![^?#\/]*\.[^?#\/.]+(?:[?#]|$)))*\/?)?([^?#\/]*))(?:\?([^#]*))?(?:#(.*))?)/;
+        var key = ['source', 'protocol', 'authority', 'userInfo', 'user', 'password', 'host', 'port',
+            'relative', 'path', 'directory', 'file', 'query', 'anchor'];
+        var m = URL_REGEX.exec(str);
+        var uri = {};
+        var i = 14;
+        while (i--) {
+            uri[key[i]] = m[i] || '';
+        }
+        return uri;
+    }
+
+    removeTrailingSlash(path: string): string {
+        return path.replace(/\/$/, '');
+    }
 }
+
+
+// getRootPath(url: string): string {
+//     // 앞쪽에서부터 우선순위
+//     // collection인 "config" 하위 경로를 제외한
+//     let collectionNames = ['daemons', 'daemon', 'configs', 'config', 'upgrade', 'service'];
+//     for (let i in collectionNames) {
+//         let collectionIndex = url.indexOf(collectionNames[i]);
+//         if (collectionIndex > 0) {
+//             return url.substring(0, collectionIndex - 1);
+//         }
+//     }
+//     return '/api';
+// }
+//
+// parseUrl(url: string): any {
+//
+//     var config: any = {};
+//     config.host = 'localhost'; // default to app web server host
+//     config.rootPath = this.getRootPath(url); // default to path when app is served (e.g.'/')
+//
+//     let parsedUrl = this.parsedUrl(url, config);
+//
+//     return parsedUrl;
+// }
+//
+// parsedUrl(url: string, config: any): any {
+//     try {
+//         var loc = this.getLocation(url);
+//         var drop = config.rootPath.length;
+//         var urlRoot = '';
+//         if (loc.host !== config.host) {
+//             // url for a server on a different host!
+//             // assume it's collection is actually here too.
+//             drop = 1; // the leading slash
+//             urlRoot = loc.protocol + '//' + loc.host + '/';
+//         }
+//         var path = loc.pathname.substring(drop);
+//         var pathSegments = path.split('/');
+//         var segmentIx = 0;
+//         // apiBase: the front part of the path devoted to getting to the api route
+//         // Assumes first path segment if no config.apiBase
+//         // else ignores as many path segments as are in config.apiBase
+//         // Does NOT care what the api base chars actually are.
+//         var apiBase;
+//         // tslint:disable-next-line:triple-equals
+//         debugger;
+//         if (config.apiBase == undefined) {
+//             apiBase = pathSegments[segmentIx++];
+//         }
+//         else {
+//             apiBase = this.removeTrailingSlash(config.apiBase.trim());
+//             if (apiBase) {
+//                 segmentIx = apiBase.split('/').length;
+//             }
+//             else {
+//                 segmentIx = 0; // no api base at all; unwise but allowed.
+//             }
+//         }
+//         apiBase = apiBase + '/';
+//         var collectionName = pathSegments[segmentIx++];
+//         // ignore anything after a '.' (e.g.,the "json" in "customers.json")
+//         collectionName = collectionName && collectionName.split('.')[0];
+//         var id = pathSegments[segmentIx++];
+//         var query = loc.search && new URLSearchParams(loc.search.substr(1));
+//         var resourceUrl = urlRoot + apiBase + collectionName + '/';
+//         return {base: apiBase, collectionName: collectionName, id: id, query: query, resourceUrl: resourceUrl};
+//     }
+//     catch (err) {
+//         var msg = 'unable to parse url \'' + url + '\'; original error: ' + err.message;
+//         throw new Error(msg);
+//     }
+// }
+//
+// getLocation(href: string): any {
+//     if (!href.startsWith('http')) {
+//         // get the document iff running in browser
+//         var doc = (typeof document === 'undefined') ? undefined : document;
+//         // add host info to url before parsing.  Use a fake host when not in browser.
+//         var base = doc ? doc.location.protocol + '//' + doc.location.host : 'http://fake';
+//         href = href.startsWith('/') ? base + href : base + '/' + href;
+//     }
+//     var uri = this.parseuri(href);
+//     var loc = {
+//         host: uri.host,
+//         protocol: uri.protocol,
+//         port: uri.port,
+//         pathname: uri.path,
+//         search: uri.query ? '?' + uri.query : ''
+//     };
+//     return loc;
+// }
+//
+// parseuri(str: string): any {
+//     // tslint:disable-next-line:max-line-length
+//     var URL_REGEX = /^(?:(?![^:@]+:[^:@\/]*@)([^:\/?#.]+):)?(?:\/\/)?((?:(([^:@]*)(?::([^:@]*))?)?@)?([^:\/?#]*)(?::(\d*))?)(((\/(?:[^?#](?![^?#\/]*\.[^?#\/.]+(?:[?#]|$)))*\/?)?([^?#\/]*))(?:\?([^#]*))?(?:#(.*))?)/;
+//     var key = ['source', 'protocol', 'authority', 'userInfo', 'user', 'password', 'host', 'port',
+//         'relative', 'path', 'directory', 'file', 'query', 'anchor'];
+//     var m = URL_REGEX.exec(str);
+//     var uri = {};
+//     var i = 14;
+//     while (i--) {
+//         uri[key[i]] = m[i] || '';
+//     }
+//     return uri;
+// }
+//
+// removeTrailingSlash(path: string): string {
+//     return path.replace(/\/$/, '');
+// }
